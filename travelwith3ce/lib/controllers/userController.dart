@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:travelwith3ce/models/userModel.dart'; // Import model User
 import 'package:firebase_database/firebase_database.dart'; // Import Firebase Realtime Database
 import 'package:crypto/crypto.dart';
@@ -15,6 +14,7 @@ class UserController {
     required String phone,
     required String address,
     required String password,
+    required String imgUser,
   }) async {
     try {
       var bytes = utf8.encode(password); // Chuyển mật khẩu thành byte array
@@ -27,6 +27,7 @@ class UserController {
         phone: phone,
         address: address,
         password: hashedPassword,
+        imgUser: "",
       );
 
       // Kiểm tra các điều kiện cần thiết (như không bỏ trống trường)
@@ -48,6 +49,42 @@ class UserController {
       // Xử lý lỗi
       print("Lỗi đăng ký: $e");
       rethrow; // Có thể ném lại lỗi để xử lý tiếp ở UI
+    }
+  }
+
+  // Hàm để đăng nhập người dùng
+  Future<Map<String, dynamic>?> loginUser({
+    required String username,
+    required String password,
+  }) async {
+    try {
+      var bytes = utf8.encode(password);
+      var hashedPassword = sha256.convert(bytes).toString();
+
+      final snapshot = await _database.child('tb_user').get();
+      if (snapshot.exists) {
+        for (var child in snapshot.children) {
+          Map<String, dynamic> data =
+              Map<String, dynamic>.from(child.value as Map);
+          User user = User.fromJson(data);
+
+          if (user.username == username && user.password == hashedPassword) {
+            // Nếu đăng nhập thành công, trả về id và user
+            return {
+              'id': child
+                  .key, // Sử dụng child.key để lấy id người dùng từ Firebase
+              'user': user,
+            };
+          }
+        }
+      }
+
+      // Nếu không tìm thấy người dùng
+      print("Đăng nhập thất bại: Sai tên đăng nhập hoặc mật khẩu.");
+      return null;
+    } catch (e) {
+      print("Lỗi đăng nhập: $e");
+      rethrow;
     }
   }
 }

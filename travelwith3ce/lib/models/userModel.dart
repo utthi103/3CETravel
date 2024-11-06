@@ -13,17 +13,19 @@ class User {
     required this.phone,
     required this.address,
     required this.password,
+    required String imgUser,
   });
 
   // Chuyển đổi từ JSON sang User
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      fullnameUser: json['fullname_user'],
-      username: json['username'],
-      email: json['email'],
-      phone: json['phone'],
-      address: json['address'],
-      password: json['password'],
+      fullnameUser: json['fullnameUser'] ?? '',
+      username: json['username'] ?? '',
+      email: json['email'] ?? '',
+      phone: json['phone'] ?? '',
+      address: json['address'] ?? '',
+      password: json['password'] ?? '',
+      imgUser: json['imgUser'] ?? '',
     );
   }
 
@@ -36,6 +38,7 @@ class User {
       'phone': phone,
       'address': address,
       'password': password,
+      'imgUser': ""
     };
   }
 }

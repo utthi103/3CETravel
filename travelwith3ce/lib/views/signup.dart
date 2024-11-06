@@ -254,13 +254,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               // Gọi hàm đăng ký từ UserController
                               try {
                                 await userController.registerUser(
-                                  fullnameUser: fullnameController.text,
-                                  username: usernameController.text,
-                                  email: emailController.text,
-                                  phone: phoneController.text,
-                                  address: addressController.text,
-                                  password: passwordController.text,
-                                );
+                                    fullnameUser: fullnameController.text,
+                                    username: usernameController.text,
+                                    email: emailController.text,
+                                    phone: phoneController.text,
+                                    address: addressController.text,
+                                    password: passwordController.text,
+                                    imgUser: ""
+                                    );
 
                                 // Hiển thị thông báo đăng ký thành công
                                 ScaffoldMessenger.of(context).showSnackBar(
