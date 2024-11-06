@@ -307,7 +307,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       child: Row(
                         children: [
                           Image.asset(
-                            'images/google.png',
+                            'assets/images/google.png',
                             fit: BoxFit.contain,
                             width: 20.0,
                             height: 20.0,
@@ -331,7 +331,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       child: Row(
                         children: [
                           Image.asset(
-                            'images/facebook.png', // Đảm bảo có hình ảnh Facebook
+                            'assets/images/facebook.png', // Đảm bảo có hình ảnh Facebook
                             fit: BoxFit.contain,
                             width: 20.0,
                             height: 20.0,
