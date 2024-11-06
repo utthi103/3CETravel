@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:travelwith3ce/constant.dart';
-import 'package:travelwith3ce/screens/account_screen.dart';
-import 'package:travelwith3ce/screens/edit_profile_screen.dart';
-import 'package:travelwith3ce/screens/my_booking_screen.dart';
-import 'package:travelwith3ce/widgets/bottom_bar.dart';
+import 'package:travelwith3ce/views/account_screen.dart';
+import 'package:travelwith3ce/views/edit_profile_screen.dart';
+import 'package:travelwith3ce/views/my_booking_screen.dart';
+import 'package:travelwith3ce/models/bottom_bar.dart';
 
 void main() {
   SystemChrome.setPreferredOrientations(
