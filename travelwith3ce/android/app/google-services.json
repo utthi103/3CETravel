@@ -1,8 +1,9 @@
 {
   "project_info": {
     "project_number": "551230337362",
+    "firebase_url": "https://cetravel-3bd3c-default-rtdb.firebaseio.com",
     "project_id": "cetravel-3bd3c",
-    "storage_bucket": "cetravel-3bd3c.appspot.com"
+    "storage_bucket": "cetravel-3bd3c.firebasestorage.app"
   },
   "client": [
     {

@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:travelwith3ce/widgets/detail/section_title.dart';
+import 'package:travelwith3ce/models/detail/facility_item.dart';
+import 'package:travelwith3ce/models/detail/section_title.dart';
 
 import '../../constant.dart';
 

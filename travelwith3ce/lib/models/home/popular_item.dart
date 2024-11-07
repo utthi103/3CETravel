@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:travelwith3ce/screens/detail_screen.dart';
+import 'package:travelwith3ce/models/detail/detail_info.dart';
+import 'package:travelwith3ce/views/detail_screen.dart'; // Import DetailScreen
 
 import '../../constant.dart';
 

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:travelwith3ce/models/detail/section_title.dart';
+import 'package:travelwith3ce/models/detail/facility_item.dart';
 
 import '../../constant.dart';
 

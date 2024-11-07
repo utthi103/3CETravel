@@ -1,45 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class CurrentUserProvider with ChangeNotifier {
-  User? _currentUser;
-  Map<String, dynamic>? _userData;
-
-  User? get currentUser => _currentUser;
-  Map<String, dynamic>? get userData => _userData;
+  Map<String, dynamic>? userData;
 
   Future<void> fetchUserData() async {
-    try {
-      _currentUser = FirebaseAuth.instance.currentUser;
-      if (_currentUser != null) {
-        DocumentSnapshot<Map<String, dynamic>> userDoc = await FirebaseFirestore
-            .instance
-            .collection('tb_user')
-            .doc(_currentUser!.uid)
-            .get();
-        if (userDoc.exists) {
-          _userData = userDoc.data();
-          notifyListeners();
-        }
-      }
-    } catch (e) {
-      print('Error fetching user data: $e');
-    }
+    // Logic để lấy dữ liệu người dùng từ cơ sở dữ liệu
+    // Ví dụ tạm thời
+    userData = {
+      'fullname_user': 'John Doe',
+      'username': 'johndoe',
+      'email': 'john@example.com',
+      'phone': '1234567890',
+      'address': '123 Main St',
+      'imgUser': 'https://example.com/path_to_user_image.jpg', // URL hình ảnh
+    };
+    notifyListeners();
   }
 
-  Future<void> updateUserData(Map<String, dynamic> data) async {
-    try {
-      if (_currentUser != null) {
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(_currentUser!.uid)
-            .update(data);
-        _userData = {...?_userData, ...data}; // Update local data
-        notifyListeners();
-      }
-    } catch (e) {
-      print('Error updating user data: $e');
-    }
+  void updateUserData(Map<String, dynamic> updatedData) {
+    userData = updatedData;
+    notifyListeners();
   }
 }

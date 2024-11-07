@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:animate_do/animate_do.dart';
-import 'package:travelwith3ce/widgets/home/popular_item.dart';
-import 'package:travelwith3ce/widgets/home/section_title.dart';
+import 'package:travelwith3ce/models/home/popular_item.dart';
+import 'package:travelwith3ce/models/home/section_title.dart';
 
 class PopularList extends StatelessWidget {
   final List items;
