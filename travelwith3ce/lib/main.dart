@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:travelwith3ce/views/admin/dashboard.dart';
 import 'package:travelwith3ce/views/login.dart';
-import 'package:travelwith3ce/views/signup.dart';
+import 'firebase_options.dart'; // Đảm bảo import file firebase_options.dart
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+
+  // Sử dụng cấu hình nền tảng cụ thể
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(const MyApp());
 }
 
@@ -14,10 +20,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
+      home: AdminDashboardApp(),
     );
   }
 }

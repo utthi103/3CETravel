@@ -42,7 +42,6 @@ dependencies:
   crypto: ^3.0.6
   shared_preferences: ^2.0.15
 
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
