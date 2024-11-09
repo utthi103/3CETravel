@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:travelwith3ce/constant.dart';
+import 'package:travelwith3ce/models/userModel.dart';
 import 'package:travelwith3ce/views/edit_profile_screen.dart';
 import 'package:travelwith3ce/views/home_screen.dart';
-import 'package:travelwith3ce/views/favourite_screen.dart'; // Import your FavouriteScreen
+import 'package:travelwith3ce/views/favourite_screen.dart';
 import 'package:travelwith3ce/views/my_booking_screen.dart';
-import 'package:travelwith3ce/views/notification_screen.dart'; // Import your NotificationScreen
-import 'package:travelwith3ce/views/account_screen.dart'; // Import your AccountScreen
+import 'package:travelwith3ce/views/notification_screen.dart';
+import 'package:travelwith3ce/views/account_screen.dart';
 
 class BottomBar extends StatefulWidget {
-  const BottomBar({Key? key}) : super(key: key);
+  final User user; // Khai báo biến user
+
+  const BottomBar({Key? key, required this.user}) : super(key: key);
 
   @override
   _BottomBarState createState() => _BottomBarState();
@@ -19,19 +22,25 @@ class _BottomBarState extends State<BottomBar> {
   int _selectedIndex = 0;
 
   // List of pages corresponding to the bottom navigation buttons
-  final List<Widget> _pages = [
-    const HomeScreen(),
-    FavouriteScreen(), // Add your FavouriteScreen
-    NotificationScreen(), // Add your NotificationScreen
-    AccountScreen(), // Add your AccountScreen
-  ];
+  final List<Widget> _pages = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _pages.addAll([
+      const HomeScreen(),
+      FavouriteScreen(),
+      NotificationScreen(),
+      AccountScreen(user: widget.user), // Truyền user vào AccountScreen
+    ]);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          _pages[_selectedIndex], // Display the selected page
+          _pages[_selectedIndex], // Hiển thị trang đã chọn
           Positioned(
             bottom: 17,
             left: 41,
@@ -52,7 +61,7 @@ class _BottomBarState extends State<BottomBar> {
                     enableFeedback: false,
                     onPressed: () {
                       setState(() {
-                        _selectedIndex = 0; // Navigate to HomeScreen
+                        _selectedIndex = 0; // Điều hướng đến HomeScreen
                       });
                     },
                     icon: SvgPicture.asset(
@@ -65,7 +74,7 @@ class _BottomBarState extends State<BottomBar> {
                     enableFeedback: false,
                     onPressed: () {
                       setState(() {
-                        _selectedIndex = 1; // Navigate to FavouriteScreen
+                        _selectedIndex = 1; // Điều hướng đến FavouriteScreen
                       });
                     },
                     icon: SvgPicture.asset(
@@ -78,7 +87,7 @@ class _BottomBarState extends State<BottomBar> {
                     enableFeedback: false,
                     onPressed: () {
                       setState(() {
-                        _selectedIndex = 2; // Navigate to NotificationScreen
+                        _selectedIndex = 2; // Điều hướng đến NotificationScreen
                       });
                     },
                     icon: SvgPicture.asset(
@@ -91,7 +100,7 @@ class _BottomBarState extends State<BottomBar> {
                     enableFeedback: false,
                     onPressed: () {
                       setState(() {
-                        _selectedIndex = 3; // Navigate to AccountScreen
+                        _selectedIndex = 3; // Điều hướng đến AccountScreen
                       });
                     },
                     icon: SvgPicture.asset(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:travelwith3ce/controllers/userController.dart';
 import 'package:travelwith3ce/models/userModel.dart';
+import 'package:travelwith3ce/views/account_screen.dart';
+import 'package:travelwith3ce/views/edit_profile_screen.dart';
 import 'package:travelwith3ce/views/home_screen.dart';
 import 'package:travelwith3ce/views/signup.dart';
 
@@ -163,7 +165,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => HomeScreen()),
+                                builder: (context) =>
+                                    AccountScreen(user: user)),
                           );
                         } else {
                           // Hiển thị thông báo lỗi khi đăng nhập thất bại

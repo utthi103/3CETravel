@@ -38,6 +38,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
 
+  var userID;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -261,16 +263,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     onPressed: _agreeToTerms
                         ? () async {
                             if (_formKey.currentState!.validate()) {
-                              // Gọi hàm đăng ký từ UserController
+                              // Tạo userID tại đây
+                              String userID = userController.createUserID();
+
                               try {
                                 await userController.registerUser(
+                                  userID: userID,
                                   fullnameUser: fullnameController.text,
                                   username: usernameController.text,
                                   email: emailController.text,
                                   phone: phoneController.text,
                                   address: addressController.text,
                                   password: passwordController.text,
-                                  imgUser: " ",
+                                  imgUser:
+                                      " ", // Hoặc đường dẫn tới ảnh đại diện nếu có
                                 );
 
                                 // Hiển thị thông báo đăng ký thành công

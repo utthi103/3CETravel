@@ -52,6 +52,8 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  get user => null;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -63,9 +65,10 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/login', // Đặt đường dẫn khởi đầu đến màn hình đăng ký
       routes: {
-        '/home': (context) =>
-            BottomBar(), // Màn hình chính với Bottom navigation
-        '/account': (context) => AccountScreen(),
+        '/home': (context) => BottomBar(
+              user: user,
+            ), // Màn hình chính với Bottom navigation
+        '/account': (context) => AccountScreen(user: user),
         '/editProfile': (context) => EditProfileScreen(),
         '/myBooking': (context) => BookingHistoryScreen(),
         '/register': (context) => RegisterScreen(), // Màn hình đăng ký
