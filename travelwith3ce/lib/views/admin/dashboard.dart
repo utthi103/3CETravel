@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:travelwith3ce/views/admin/user_management.dart';
 
 void main() {
   runApp(const AdminDashboardApp());
@@ -14,6 +15,7 @@ class AdminDashboardApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      debugShowCheckedModeBanner: false,
       home: const AdminDashboard(),
     );
   }
@@ -44,7 +46,8 @@ class _AdminDashboardState extends State<AdminDashboard> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
-                  Icon(Icons.admin_panel_settings, size: 50, color: Colors.white),
+                  Icon(Icons.admin_panel_settings,
+                      size: 50, color: Colors.white),
                   SizedBox(height: 10),
                   Text('Admin Panel',
                       style: TextStyle(color: Colors.white, fontSize: 20)),
@@ -60,7 +63,11 @@ class _AdminDashboardState extends State<AdminDashboard> {
               leading: const Icon(Icons.person),
               title: const Text('Quản lý người dùng'),
               onTap: () {
-                // Điều hướng đến màn hình quản lý người dùng
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const UserManagementScreen()),
+                );
               },
             ),
             ListTile(
@@ -156,9 +163,12 @@ class DashboardCard extends StatelessWidget {
             children: [
               Icon(icon, size: 50, color: Colors.blue),
               const SizedBox(height: 20),
-              Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              Text(title,
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold)),
               const SizedBox(height: 10),
-              Text(subtitle, style: const TextStyle(fontSize: 14, color: Colors.grey)),
+              Text(subtitle,
+                  style: const TextStyle(fontSize: 14, color: Colors.grey)),
             ],
           ),
         ),

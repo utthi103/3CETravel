@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:travelwith3ce/controllers/userController.dart';
 import 'package:travelwith3ce/models/userModel.dart';
+import 'package:travelwith3ce/views/forgot_password.dart';
 import 'package:travelwith3ce/views/signup.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -140,7 +141,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     TextButton(
                       onPressed: () {
-                        // Hành động khi nhấn nút Quên mật khẩu
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                ForgotPasswordScreen(), // Đổi trang đích nếu cần
+                          ),
+                        );
                       },
                       child: const Text(
                         'Quên mật khẩu',
