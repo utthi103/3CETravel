@@ -10,6 +10,10 @@
 analyzer:
   errors:
     depend_on_referenced_packages: ignore
+    library_private_types_in_public_api: ignore
+    prefer_const_constructors: ignore ignore ignore ignore ignore ignore ignore
+    unused_import: ignore
+    use_key_in_widget_constructors: ignore
     use_super_parameters: ignore
 include: package:flutter_lints/flutter.yaml
 

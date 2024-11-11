@@ -1,5 +1,4 @@
 class User {
-  String userID;
   String fullnameUser;
   String username;
   String email;
@@ -16,13 +15,11 @@ class User {
     required this.address,
     required this.password,
     required this.imgUser,
-    required this.userID,
   });
 
   // Chuyển đổi từ JSON sang User
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      userID: json['userID'] ?? '',
       fullnameUser: json['fullname_user'] ?? '',
       username: json['username'] ?? '',
       email: json['email'] ?? '',
@@ -42,7 +39,7 @@ class User {
       'phone': phone,
       'address': address,
       'password': password,
-      'imgUser': imgUser,
+      'imgUser': "",
     };
   }
 }

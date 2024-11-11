@@ -4,9 +4,7 @@ import 'package:travelwith3ce/models/home/section_title.dart';
 
 class NearbyGrid extends StatelessWidget {
   final List<String> data;
-
   const NearbyGrid({Key? key, required this.data}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return FadeInUp(

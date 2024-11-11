@@ -6,12 +6,10 @@ import 'package:travelwith3ce/models/home/section_title.dart';
 
 class PopularList extends StatelessWidget {
   final List items;
-
   const PopularList({
     Key? key,
     required this.items,
   }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return FadeInUp(
@@ -30,7 +28,6 @@ class PopularList extends StatelessWidget {
                 itemCount: items.length,
                 itemBuilder: (context, index) {
                   var item = items[index];
-
                   return PopularItem(
                     imageUrl: item['imageUrl'],
                     name: item['name'],

@@ -1,11 +1,8 @@
+// account_screen.dart
 import 'package:flutter/material.dart';
-import 'package:travelwith3ce/models/userModel.dart'; // Import model User
 
 class AccountScreen extends StatelessWidget {
-  final User user; // Thêm User để nhận thông tin người dùng
-
-  const AccountScreen({Key? key, required this.user}) : super(key: key);
-
+  const AccountScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,25 +57,25 @@ class AccountScreen extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.home, color: Colors.blue),
               onPressed: () {
-                // Navigate to Home
+                Navigator.pushNamed(context, '/home');
               },
             ),
             IconButton(
               icon: const Icon(Icons.favorite, color: Colors.blue),
               onPressed: () {
-                // Navigate to Favorites
+                Navigator.pushNamed(context, '/favourites');
               },
             ),
             IconButton(
               icon: const Icon(Icons.notifications, color: Colors.blue),
               onPressed: () {
-                // Navigate to Notifications
+                Navigator.pushNamed(context, '/notifications');
               },
             ),
             IconButton(
               icon: const Icon(Icons.person, color: Colors.blue),
               onPressed: () {
-                // Navigate to Account
+                Navigator.pushNamed(context, '/account');
               },
             ),
           ],
@@ -89,32 +86,29 @@ class AccountScreen extends StatelessWidget {
 
   // User Info Widget
   Widget _buildUserInfo() {
-    return Row(
+    return const Row(
       children: [
         CircleAvatar(
           radius: 40, // Adjust size as needed
-          backgroundImage: user.imgUser.isNotEmpty
-              ? NetworkImage(user.imgUser) // Hiển thị hình ảnh từ URL
-              : const AssetImage(
-                  'assets/images/profile.png'), // Hình ảnh mặc định
+          backgroundImage:
+              AssetImage('assets/images/profile.png'), // Use the provided image
         ),
-        const SizedBox(width: 16), // Spacing between avatar and text
+        SizedBox(width: 16), // Spacing between avatar and text
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              user.fullnameUser, // Hiển thị tên người dùng thực tế
-              style: const TextStyle(
+              '3CE TRAVEL', // Replace with actual user name
+              style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: Colors.black, // Đổi sang màu đen cho dễ đọc
+                color: Colors.white,
               ),
             ),
-            const SizedBox(height: 4),
+            SizedBox(height: 4),
             Text(
-              user.email, // Hiển thị email người dùng thực tế
-              style:
-                  const TextStyle(color: Colors.black54), // Màu xám cho email
+              '3cetravel@gmail.com', // Replace with actual user email
+              style: TextStyle(color: Colors.white70),
             ),
           ],
         ),
@@ -123,21 +117,21 @@ class AccountScreen extends StatelessWidget {
   }
 
   // ListTile Builder
-  Widget _buildListTile({
-    required String title,
-    required IconData icon,
-    required VoidCallback onTap,
-  }) {
+  Widget _buildListTile(
+      {required String title,
+      required IconData icon,
+      required VoidCallback onTap}) {
     return ListTile(
       title: Text(
         title,
-        style: const TextStyle(color: Colors.black), // Màu chữ đen
+        style: const TextStyle(color: Colors.white), // White text color
       ),
-      leading: Icon(icon, color: Colors.black), // Màu icon đen
+      leading: Icon(icon, color: Colors.white), // White icon color
       onTap: onTap,
-      tileColor: Colors.blueAccent.withOpacity(0.2), // Màu nền cho mỗi tile
+      tileColor:
+          Colors.blueAccent.withOpacity(0.2), // Background color for each tile
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10), // Đường viền bo cho tile
+        borderRadius: BorderRadius.circular(10), // Rounded corners for tiles
       ),
     );
   }
@@ -154,15 +148,15 @@ class AccountScreen extends StatelessWidget {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Đóng dialog
+                Navigator.of(context).pop(); // Close the dialog
               },
               child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () {
                 // Handle account deletion logic here
-                Navigator.of(context).pop(); // Đóng dialog
-                // Hiển thị snackbar hoặc thông báo thành công
+                Navigator.of(context).pop(); // Close the dialog
+                // Show a snackbar or a message indicating success
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Account deleted successfully')),
                 );

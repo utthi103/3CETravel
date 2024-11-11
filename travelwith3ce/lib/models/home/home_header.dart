@@ -1,12 +1,12 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:travelwith3ce/models/userModel.dart';
 
 import '../../constant.dart';
 
 class HomeHeader extends StatelessWidget {
   const HomeHeader({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Column(

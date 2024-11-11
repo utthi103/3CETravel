@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:travelwith3ce/constant.dart';
-import 'package:travelwith3ce/models/userModel.dart';
 import 'package:travelwith3ce/views/edit_profile_screen.dart';
 import 'package:travelwith3ce/views/home_screen.dart';
 import 'package:travelwith3ce/views/favourite_screen.dart';
@@ -10,9 +9,7 @@ import 'package:travelwith3ce/views/notification_screen.dart';
 import 'package:travelwith3ce/views/account_screen.dart';
 
 class BottomBar extends StatefulWidget {
-  final User user; // Khai báo biến user
-
-  const BottomBar({Key? key, required this.user}) : super(key: key);
+  const BottomBar({Key? key}) : super(key: key);
 
   @override
   _BottomBarState createState() => _BottomBarState();
@@ -21,18 +18,19 @@ class BottomBar extends StatefulWidget {
 class _BottomBarState extends State<BottomBar> {
   int _selectedIndex = 0;
 
-  // List of pages corresponding to the bottom navigation buttons
-  final List<Widget> _pages = [];
+  // Danh sách các trang tương ứng với các nút điều hướng dưới
+  final List<Widget> _pages = [
+    const HomeScreen(),
+    FavouriteScreen(), // Sử dụng const nếu widget không thay đổi
+    NotificationScreen(),
+    const AccountScreen(),
+  ];
 
-  @override
-  void initState() {
-    super.initState();
-    _pages.addAll([
-      const HomeScreen(),
-      FavouriteScreen(),
-      NotificationScreen(),
-      AccountScreen(user: widget.user), // Truyền user vào AccountScreen
-    ]);
+  // Hàm điều hướng đến trang tương ứng
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index; // Cập nhật chỉ số trang đã chọn
+    });
   }
 
   @override
@@ -47,7 +45,6 @@ class _BottomBarState extends State<BottomBar> {
             right: 41,
             child: Container(
               height: 52,
-              width: 291,
               decoration: BoxDecoration(
                 color: kBottomBarColor,
                 borderRadius: BorderRadius.circular(22),
@@ -58,53 +55,43 @@ class _BottomBarState extends State<BottomBar> {
                   IconButton(
                     splashColor: Colors.transparent,
                     highlightColor: kSecondaryColor,
-                    enableFeedback: false,
-                    onPressed: () {
-                      setState(() {
-                        _selectedIndex = 0; // Điều hướng đến HomeScreen
-                      });
-                    },
+                    onPressed: () =>
+                        _onItemTapped(0), // Điều hướng đến HomeScreen
                     icon: SvgPicture.asset(
                       'assets/icons/home-active.svg',
+                      color: _selectedIndex == 0
+                          ? kPrimaryColor
+                          : null, // Đổi màu icon nếu được chọn
                     ),
                   ),
                   IconButton(
                     splashColor: Colors.transparent,
                     highlightColor: kSecondaryColor,
-                    enableFeedback: false,
-                    onPressed: () {
-                      setState(() {
-                        _selectedIndex = 1; // Điều hướng đến FavouriteScreen
-                      });
-                    },
+                    onPressed: () =>
+                        _onItemTapped(1), // Điều hướng đến FavouriteScreen
                     icon: SvgPicture.asset(
                       'assets/icons/heart-big.svg',
+                      color: _selectedIndex == 1 ? kPrimaryColor : null,
                     ),
                   ),
                   IconButton(
                     splashColor: Colors.transparent,
                     highlightColor: kSecondaryColor,
-                    enableFeedback: false,
-                    onPressed: () {
-                      setState(() {
-                        _selectedIndex = 2; // Điều hướng đến NotificationScreen
-                      });
-                    },
+                    onPressed: () =>
+                        _onItemTapped(2), // Điều hướng đến NotificationScreen
                     icon: SvgPicture.asset(
                       'assets/icons/bell.svg',
+                      color: _selectedIndex == 2 ? kPrimaryColor : null,
                     ),
                   ),
                   IconButton(
                     splashColor: Colors.transparent,
                     highlightColor: kSecondaryColor,
-                    enableFeedback: false,
-                    onPressed: () {
-                      setState(() {
-                        _selectedIndex = 3; // Điều hướng đến AccountScreen
-                      });
-                    },
+                    onPressed: () =>
+                        _onItemTapped(3), // Điều hướng đến AccountScreen
                     icon: SvgPicture.asset(
                       'assets/icons/user.svg',
+                      color: _selectedIndex == 3 ? kPrimaryColor : null,
                     ),
                   ),
                 ],

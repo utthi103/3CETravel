@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:travelwith3ce/models/bottom_bar.dart';
 import 'package:travelwith3ce/models/home/home_header.dart';
 import 'package:travelwith3ce/models/home/search_bar.dart';
 import 'package:travelwith3ce/models/home/chips.dart';
@@ -18,7 +19,7 @@ class HomeScreen extends StatelessWidget {
           physics: const BouncingScrollPhysics(),
           children: [
             const HomeHeader(),
-            // const SearchBar(),
+            // const SearchBar(), // Nếu bạn muốn sử dụng SearchBar, hãy bỏ comment
             const Chips(),
             PopularList(items: popular),
             NearbyGrid(data: nearby),

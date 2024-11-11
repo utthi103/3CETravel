@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:travelwith3ce/controllers/userController.dart';
 import 'package:travelwith3ce/models/userModel.dart';
 import 'package:travelwith3ce/views/account_screen.dart';
-import 'package:travelwith3ce/views/edit_profile_screen.dart';
 import 'package:travelwith3ce/views/home_screen.dart';
 import 'package:travelwith3ce/views/signup.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,6 +12,7 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -33,6 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>(); // Thêm key cho form
   bool _obscureText = true; // Trạng thái của mật khẩu (ẩn/hiển)
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -156,17 +159,30 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () async {
                       if (_formKey.currentState?.validate() ?? false) {
                         // Nếu form hợp lệ, gọi hàm loginUser từ UserController và kiểm tra kết quả
-                        User? user = await userController.loginUser(
+                        Map<String, dynamic>? loginResult =
+                            await userController.loginUser(
                           username: usernameController.text,
                           password: passwordController.text,
                         );
-                        if (user != null) {
+
+                        if (loginResult != null) {
+                          // Lấy userId và user từ kết quả trả về
+                          String userId = loginResult['id'];
+                          User user = loginResult['user'];
+                          print("hehehehehhe Id User" + userId);
+
+                          // Lưu userId vào SharedPreferences
+                          final prefs = await SharedPreferences.getInstance();
+                          await prefs.setString('userId', userId);
+
                           // Chuyển đến trang chính (ví dụ: HomeScreen) khi đăng nhập thành công
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    AccountScreen(user: user)),
+                              builder: (context) =>
+                                  // const HomeScreen(), // Đổi trang đích nếu cần
+                                  AccountScreen(),
+                            ),
                           );
                         } else {
                           // Hiển thị thông báo lỗi khi đăng nhập thất bại

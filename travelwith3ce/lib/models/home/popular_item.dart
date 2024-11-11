@@ -10,7 +10,6 @@ class PopularItem extends StatelessWidget {
   final String name;
   final String price;
   final String rating;
-
   const PopularItem({
     Key? key,
     required this.imageUrl,
@@ -18,7 +17,6 @@ class PopularItem extends StatelessWidget {
     required this.price,
     required this.rating,
   }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Padding(
