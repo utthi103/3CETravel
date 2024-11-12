@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:travelwith3ce/widgets/detail/image_container.dart';
-import 'package:travelwith3ce/widgets/detail/detail_info.dart';
-import 'package:travelwith3ce/widgets/detail/description.dart';
-import 'package:travelwith3ce/widgets/detail/facilities.dart';
-import 'package:travelwith3ce/widgets/detail/custom_button.dart';
+import 'package:travelwith3ce/views/detail/image_container.dart';
+import 'package:travelwith3ce/views/detail/detail_info.dart';
+import 'package:travelwith3ce/views/detail/description.dart';
+import 'package:travelwith3ce/views/detail/facilities.dart';
+import 'package:travelwith3ce/views/detail/custom_button.dart';
 
 class DetailScreen extends StatefulWidget {
   final String imageUrl;

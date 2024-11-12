@@ -87,17 +87,17 @@ class AccountScreen extends StatelessWidget {
 
   // User Info Widget
   Widget _buildUserInfo() {
-    return Row(
+    return const Row(
       children: [
         CircleAvatar(
           radius: 40, // Adjust size as needed
-          backgroundImage: const AssetImage(
-              'assets/images/profile.png'), // Use the provided image
+          backgroundImage:
+              AssetImage('assets/images/profile.png'), // Use the provided image
         ),
-        const SizedBox(width: 16), // Spacing between avatar and text
+        SizedBox(width: 16), // Spacing between avatar and text
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
+          children: [
             Text(
               '3CE TRAVEL', // Replace with actual user name
               style: TextStyle(

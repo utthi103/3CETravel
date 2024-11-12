@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:travelwith3ce/constant.dart';
-import 'package:travelwith3ce/screens/edit_profile_screen.dart';
-import 'package:travelwith3ce/screens/home_screen.dart';
-import 'package:travelwith3ce/screens/favourite_screen.dart'; // Import your FavouriteScreen
-import 'package:travelwith3ce/screens/my_booking_screen.dart';
-import 'package:travelwith3ce/screens/notification_screen.dart'; // Import your NotificationScreen
-import 'package:travelwith3ce/screens/account_screen.dart'; // Import your AccountScreen
+import 'package:travelwith3ce/views/edit_profile_screen.dart';
+import 'package:travelwith3ce/views/home_screen.dart';
+import 'package:travelwith3ce/views/favourite_screen.dart'; // Import your FavouriteScreen
+import 'package:travelwith3ce/views/my_booking_screen.dart';
+import 'package:travelwith3ce/views/notification_screen.dart'; // Import your NotificationScreen
+import 'package:travelwith3ce/views/account_screen.dart'; // Import your AccountScreen
 
 class BottomBar extends StatefulWidget {
   const BottomBar({Key? key}) : super(key: key);

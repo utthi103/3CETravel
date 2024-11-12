@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:travelwith3ce/models/home/home_header.dart';
-import 'package:travelwith3ce/models/home/search_bar.dart';
-import 'package:travelwith3ce/models/home/chips.dart';
-import 'package:travelwith3ce/models/home/popular_list.dart';
-import 'package:travelwith3ce/models/home/nearby_grid.dart';
+import 'package:travelwith3ce/views/home/home_header.dart';
+import 'package:travelwith3ce/views/home/search_bar.dart';
+import 'package:travelwith3ce/views/home/chips.dart';
+import 'package:travelwith3ce/views/home/popular_list.dart';
+import 'package:travelwith3ce/views/home/nearby_grid.dart';
 
 import '../dummy.dart';
 

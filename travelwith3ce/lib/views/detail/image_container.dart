@@ -1,8 +1,8 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:travelwith3ce/models/detail/image_reviews.dart';
-import 'package:travelwith3ce/widgets/detail/image_reviews.dart';
+import 'package:travelwith3ce/views/detail/image_reviews.dart';
+import 'package:travelwith3ce/views/detail/image_reviews.dart';
 
 import '../../constant.dart';
 

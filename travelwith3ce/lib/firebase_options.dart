@@ -46,7 +46,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '551230337362',
     projectId: 'cetravel-3bd3c',
     authDomain: 'cetravel-3bd3c.firebaseapp.com',
-    storageBucket: 'cetravel-3bd3c.appspot.com',
+    databaseURL: 'https://cetravel-3bd3c-default-rtdb.firebaseio.com',
+    storageBucket: 'cetravel-3bd3c.firebasestorage.app',
     measurementId: 'G-E78WB9DHVD',
   );
 
@@ -55,7 +56,8 @@ class DefaultFirebaseOptions {
     appId: '1:551230337362:android:76327d8a7987155284ca8b',
     messagingSenderId: '551230337362',
     projectId: 'cetravel-3bd3c',
-    storageBucket: 'cetravel-3bd3c.appspot.com',
+    databaseURL: 'https://cetravel-3bd3c-default-rtdb.firebaseio.com',
+    storageBucket: 'cetravel-3bd3c.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
@@ -63,7 +65,8 @@ class DefaultFirebaseOptions {
     appId: '1:551230337362:ios:0cc1a6a5c3f695b384ca8b',
     messagingSenderId: '551230337362',
     projectId: 'cetravel-3bd3c',
-    storageBucket: 'cetravel-3bd3c.appspot.com',
+    databaseURL: 'https://cetravel-3bd3c-default-rtdb.firebaseio.com',
+    storageBucket: 'cetravel-3bd3c.firebasestorage.app',
     iosBundleId: 'com.example.travelwith3ce',
   );
 
@@ -72,7 +75,8 @@ class DefaultFirebaseOptions {
     appId: '1:551230337362:ios:0cc1a6a5c3f695b384ca8b',
     messagingSenderId: '551230337362',
     projectId: 'cetravel-3bd3c',
-    storageBucket: 'cetravel-3bd3c.appspot.com',
+    databaseURL: 'https://cetravel-3bd3c-default-rtdb.firebaseio.com',
+    storageBucket: 'cetravel-3bd3c.firebasestorage.app',
     iosBundleId: 'com.example.travelwith3ce',
   );
 
@@ -82,7 +86,9 @@ class DefaultFirebaseOptions {
     messagingSenderId: '551230337362',
     projectId: 'cetravel-3bd3c',
     authDomain: 'cetravel-3bd3c.firebaseapp.com',
-    storageBucket: 'cetravel-3bd3c.appspot.com',
+    databaseURL: 'https://cetravel-3bd3c-default-rtdb.firebaseio.com',
+    storageBucket: 'cetravel-3bd3c.firebasestorage.app',
     measurementId: 'G-1RTFDTKTZY',
   );
+
 }

@@ -1,12 +1,18 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travelwith3ce/constant.dart';
-import 'package:travelwith3ce/widgets/account/profile_picture.dart';
-import 'package:travelwith3ce/widgets/account/text_field.dart';
-import 'package:travelwith3ce/widgets/account/edit_button.dart';
-import 'package:travelwith3ce/providers/current_user_provider.dart';
+import 'package:travelwith3ce/controllers/userController.dart';
+import 'package:travelwith3ce/views/account/edit_button.dart';
+import 'package:travelwith3ce/views/account/text_field.dart';
+import 'package:travelwith3ce/models/userModel.dart';
 
 class EditProfileScreen extends StatefulWidget {
+  const EditProfileScreen({Key? key}) : super(key: key);
+
   @override
   _EditProfileScreenState createState() => _EditProfileScreenState();
 }
@@ -18,23 +24,76 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final _phoneController = TextEditingController();
   final _addressController = TextEditingController();
 
+  String? userId;
+  String? base64Image; // To store Base64 representation of the image
+  final ImagePicker _picker = ImagePicker();
+  UserController userController = UserController();
+  final databaseRf = FirebaseDatabase.instance.ref("tb_user");
+
+  final String defaultImagePath = 'assets/images/profile.png';
+
   @override
   void initState() {
     super.initState();
-    _fetchUserData();
+    _loadUserData();
   }
 
-  Future<void> _fetchUserData() async {
-    final userProvider =
-        Provider.of<CurrentUserProvider>(context, listen: false);
-    await userProvider.fetchUserData();
-    if (userProvider.userData != null) {
-      _fullNameController.text = userProvider.userData!['fullname_user'] ?? '';
-      _usernameController.text = userProvider.userData!['username'] ?? '';
-      _emailController.text = userProvider.userData!['email'] ?? '';
-      _phoneController.text = userProvider.userData!['phone'] ?? '';
-      _addressController.text = userProvider.userData!['address'] ?? '';
+  Future<String?> _loadUserId() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('userId');
+  }
+
+  Future<void> _loadUserData() async {
+    userId = await _loadUserId();
+
+    if (userId != null) {
+      User? user = await userController.getUserById(userId!);
+      if (user != null) {
+        _fullNameController.text = user.fullnameUser;
+        _usernameController.text = user.username;
+        _emailController.text = user.email;
+        _phoneController.text = user.phone;
+        _addressController.text = user.address;
+        base64Image = user.imgUser; // Load the user's image
+      } else {
+        print("No user data found");
+      }
+    } else {
+      print("UserId not found in SharedPreferences");
     }
+  }
+
+  Future<void> _pickImage() async {
+    final XFile? selectedImage =
+        await _picker.pickImage(source: ImageSource.gallery);
+    if (selectedImage != null) {
+      setState(() {
+        // Convert the image to Base64
+        File imageFile = File(selectedImage.path);
+        base64Image = base64Encode(imageFile.readAsBytesSync());
+      });
+    }
+  }
+
+  Future<void> _updateUserProfile() async {
+    // Update user information in Firebase
+    databaseRf.child(userId!).update({
+      'fullname_user': _fullNameController.text,
+      'username': _usernameController.text,
+      'email': _emailController.text,
+      'phone': _phoneController.text,
+      'address': _addressController.text,
+      'imgUser': base64Image ?? "placeholder_base64_image",
+    }).then((_) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Profile updated successfully!')),
+      );
+    }).catchError((error) {
+      print("Failed to update profile: $error");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Profile update failed!')),
+      );
+    });
   }
 
   @override
@@ -49,7 +108,27 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ProfilePictureWidget(),
+            GestureDetector(
+              onTap: _pickImage,
+              child: ClipOval(
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                  ),
+                  height: 100,
+                  width: 100,
+                  child: base64Image != null && base64Image!.isNotEmpty
+                      ? Image.memory(
+                          base64Decode(base64Image!),
+                          fit: BoxFit.cover,
+                        )
+                      : Image.asset(
+                          defaultImagePath,
+                          fit: BoxFit.cover,
+                        ),
+                ),
+              ),
+            ),
             const SizedBox(height: 20),
             TextFieldWidget(
               controller: _fullNameController,
@@ -82,18 +161,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             ),
             const SizedBox(height: 20),
             EditButtonWidget(
-              onPressed: () {
-                // Handle edit action (e.g., save changes)
-                _updateUserProfile();
-              },
+              onPressed: _updateUserProfile,
             ),
           ],
         ),
       ),
     );
-  }
-
-  void _updateUserProfile() {
-    // Implement the update logic here
   }
 }
