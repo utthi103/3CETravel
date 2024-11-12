@@ -1,18 +1,14 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travelwith3ce/constant.dart';
-import 'package:travelwith3ce/controllers/current_user_provider.dart';
 import 'package:travelwith3ce/controllers/userController.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:travelwith3ce/models/account/edit_button.dart';
-import 'package:travelwith3ce/models/account/profile_picture.dart';
 import 'package:travelwith3ce/models/account/text_field.dart';
 import 'package:travelwith3ce/models/userModel.dart';
-import 'package:travelwith3ce/views/profile_picture.dart';
 
 class EditProfileScreen extends StatefulWidget {
   @override
@@ -25,12 +21,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
   final _addressController = TextEditingController();
+
   String? userId;
   XFile? _imageFile; // Biến để lưu trữ ảnh đã chọn
+  String? base64Image; // Biến để lưu trữ chuỗi Base64
   final ImagePicker _picker = ImagePicker();
-
   UserController userController = UserController(); // Khởi tạo UserController
   final databaseRf = FirebaseDatabase.instance.ref("tb_user");
+
+  // Đường dẫn ảnh mặc định
+  final String defaultImagePath =
+      'assets/images/profile.png'; // Đường dẫn đến ảnh mặc định
 
   @override
   void initState() {
@@ -54,12 +55,49 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         _emailController.text = user.email;
         _phoneController.text = user.phone;
         _addressController.text = user.address;
+        base64Image = user.imgUser; // Nếu có trường hình ảnh trong User model
       } else {
         print("No user data found");
       }
     } else {
       print("UserId not found in SharedPreferences");
     }
+  }
+
+  Future<void> _pickImage() async {
+    final XFile? selectedImage =
+        await _picker.pickImage(source: ImageSource.gallery);
+    if (selectedImage != null) {
+      setState(() {
+        _imageFile = selectedImage; // Lưu ảnh đã chọn
+      });
+
+      // Chuyển đổi hình ảnh thành Base64
+      List<int> imageBytes = await File(_imageFile!.path).readAsBytes();
+      base64Image = base64Encode(imageBytes);
+    }
+  }
+
+  Future<void> _updateUserProfile() async {
+    // Cập nhật thông tin người dùng vào Firebase
+    databaseRf.child(userId!).update({
+      'fullname': _fullNameController.text,
+      'username': _usernameController.text,
+      'email': _emailController.text,
+      'phone': _phoneController.text,
+      'address': _addressController.text,
+      'image_base64':
+          base64Image ?? "placeholder_base64_image", // Lưu chuỗi Base64
+    }).then((_) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Cập nhật hồ sơ thành công!')),
+      );
+    }).catchError((error) {
+      print("Failed to update profile: $error");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Cập nhật hồ sơ thất bại!')),
+      );
+    });
   }
 
   @override
@@ -74,9 +112,26 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ProfilePictureWidget(
-              imageFile: _imageFile, // Truyền ảnh đã chọn
+            GestureDetector(
               onTap: _pickImage, // Truyền hàm chọn ảnh
+              child: ClipOval(
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                  ),
+                  height: 100, // Chiều cao cho avatar
+                  width: 100, // Chiều rộng cho avatar
+                  child: base64Image != null
+                      ? Image.memory(
+                          base64Decode(base64Image!),
+                          fit: BoxFit.cover,
+                        )
+                      : Image.asset(
+                          defaultImagePath, // Hiển thị ảnh mặc định
+                          fit: BoxFit.cover,
+                        ),
+                ),
+              ),
             ),
             const SizedBox(height: 20),
             TextFieldWidget(
@@ -110,53 +165,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             ),
             const SizedBox(height: 20),
             EditButtonWidget(
-              onPressed: () {
-                _updateUserProfile(); // Gọi hàm cập nhật hồ sơ
-              },
+              onPressed: _updateUserProfile, // Gọi hàm cập nhật hồ sơ
             ),
           ],
         ),
       ),
     );
-  }
-
-  Future<void> _pickImage() async {
-    final XFile? selectedImage =
-        await _picker.pickImage(source: ImageSource.gallery);
-    if (selectedImage != null) {
-      setState(() {
-        _imageFile = selectedImage; // Lưu ảnh đã chọn
-      });
-    }
-  }
-
-  Future<void> _updateUserProfile() async {
-    String? downloadURL;
-
-    if (_imageFile != null) {
-      final String fileName = _imageFile!.name;
-      final Reference storageRef =
-          FirebaseStorage.instance.ref().child('images/$fileName');
-
-      await storageRef.putFile(File(_imageFile!.path));
-      downloadURL = await storageRef.getDownloadURL();
-    }
-
-    databaseRf.child(userId!).update({
-      'fullname': _fullNameController.text,
-      'email': _emailController.text,
-      'phone': _phoneController.text,
-      'address': _addressController.text,
-      'image_url': downloadURL ?? "placeholder_image_url",
-    }).then((_) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Profile updated successfully')),
-      );
-    }).catchError((error) {
-      print("Failed to update profile: $error");
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Failed to update profile')),
-      );
-    });
   }
 }

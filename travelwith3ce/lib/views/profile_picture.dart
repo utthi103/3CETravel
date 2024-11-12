@@ -1,14 +1,14 @@
-import 'dart:io';
+import 'dart:convert'; // Thêm để xử lý Base64
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ProfilePictureWidget extends StatelessWidget {
-  final XFile? imageFile; // Biến để lưu ảnh đã chọn
+  final String? base64Image; // Thay đổi từ imageFile sang base64Image
   final Function onTap; // Hàm callback khi nhấn vào hình ảnh
 
   const ProfilePictureWidget({
     Key? key,
-    this.imageFile,
+    this.base64Image,
     required this.onTap,
   }) : super(key: key);
 
@@ -18,9 +18,9 @@ class ProfilePictureWidget extends StatelessWidget {
       onTap: () => onTap(), // Gọi hàm onTap khi nhấn
       child: CircleAvatar(
         radius: 50, // Kích thước của hình tròn
-        backgroundImage: imageFile != null
-            ? FileImage(File(imageFile!.path)) // Hiển thị ảnh đã chọn
-            : AssetImage('assets/images/default_profile.png') // Ảnh mặc định
+        backgroundImage: base64Image != null
+            ? MemoryImage(base64Decode(base64Image!)) // Hiển thị ảnh từ Base64
+            : AssetImage('assets/images/profile.png') // Ảnh mặc định
                 as ImageProvider, // Chuyển đổi sang ImageProvider
       ),
     );
