@@ -56,44 +56,60 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         _addressController.text = user.address;
         base64Image = user.imgUser; // Load the user's image
       } else {
-        print("No user data found");
+        _showSnackBar("No user data found");
       }
     } else {
-      print("UserId not found in SharedPreferences");
+      _showSnackBar("UserId not found in SharedPreferences");
     }
   }
 
   Future<void> _pickImage() async {
-    final XFile? selectedImage =
-        await _picker.pickImage(source: ImageSource.gallery);
-    if (selectedImage != null) {
-      setState(() {
-        // Convert the image to Base64
-        File imageFile = File(selectedImage.path);
-        base64Image = base64Encode(imageFile.readAsBytesSync());
-      });
+    try {
+      final XFile? selectedImage =
+          await _picker.pickImage(source: ImageSource.gallery);
+      if (selectedImage != null) {
+        print('Selected image path: ${selectedImage.path}');
+        final imageBytes = await File(selectedImage.path).readAsBytes();
+        setState(() {
+          base64Image = base64Encode(imageBytes);
+        });
+        print('Base64 Image after picking: $base64Image');
+      } else {
+        print('No image selected');
+      }
+    } catch (e) {
+      print('Error picking image: $e');
     }
   }
 
   Future<void> _updateUserProfile() async {
-    // Update user information in Firebase
-    databaseRf.child(userId!).update({
+    if (userId == null) return;
+
+    print('Base64 Image before update: $base64Image');
+
+    final updatedData = {
       'fullname_user': _fullNameController.text,
       'username': _usernameController.text,
       'email': _emailController.text,
       'phone': _phoneController.text,
       'address': _addressController.text,
-      'imgUser': base64Image ?? "placeholder_base64_image",
-    }).then((_) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Profile updated successfully!')),
-      );
-    }).catchError((error) {
+      'imgUser': base64Image ?? '',
+    };
+
+    print('Updating user profile with data: $updatedData');
+
+    try {
+      await databaseRf.child(userId!).update(updatedData);
+      _showSnackBar('Profile updated successfully!');
+    } catch (error) {
       print("Failed to update profile: $error");
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Profile update failed!')),
-      );
-    });
+      _showSnackBar('Profile update failed!');
+    }
+  }
+
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
 import 'package:travelwith3ce/models/userModel.dart'; // Import model User
@@ -118,7 +119,7 @@ class UserController {
           'truongthiutthi@gmail.com', '@151617tt'); // Thay thông tin của bạn
 
       final message = Message()
-        ..from = Address(
+        ..from = const Address(
             'your-email@gmail.com', 'Your App Name') // Địa chỉ email của bạn
         ..recipients.add(email)
         ..subject = 'Mã OTP để đặt lại mật khẩu'
@@ -182,6 +183,17 @@ class UserController {
     } catch (e) {
       print("Lỗi khi xóa người dùng: $e");
       rethrow;
+    }
+  }
+
+  // Helper method to decode Base64 string
+  Uint8List _getImageFromBase64(String base64String) {
+    if (base64String.contains(',')) {
+      // Split only if there is a comma
+      return base64Decode(base64String.split(',')[1]);
+    } else {
+      // If no comma, decode directly
+      return base64Decode(base64String);
     }
   }
 }

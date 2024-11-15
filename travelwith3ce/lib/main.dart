@@ -11,15 +11,13 @@ import 'package:travelwith3ce/views/account_screen.dart';
 import 'package:travelwith3ce/views/edit_profile_screen.dart';
 import 'package:travelwith3ce/controllers/current_user_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // Khởi tạo Firebase với các tùy chọn
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
   runApp(const MyApp());
 }
 
@@ -28,7 +26,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var userId;
     return ChangeNotifierProvider(
       create: (context) => CurrentUserProvider(),
       child: MaterialApp(
@@ -38,30 +35,33 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        initialRoute: '/login', // Đặt đường dẫn khởi đầu đến màn hình đăng nhập
+        initialRoute: '/', // Set the initial route
         routes: {
-          '/home': (context) =>
-              const BottomBar(), // Màn hình chính với Bottom navigation
+          '/': (context) => StreamBuilder<User?>(
+                stream: FirebaseAuth.instance.authStateChanges(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.active) {
+                    if (snapshot.hasData) {
+                      // Fetch user data when authenticated
+                      Provider.of<CurrentUserProvider>(context, listen: false)
+                          .fetchUserData();
+                      return const BottomBar();
+                    } else {
+                      return const LoginScreen();
+                    }
+                  }
+                  return const Center(child: CircularProgressIndicator());
+                },
+              ),
+          '/home': (context) => const BottomBar(),
           '/account': (context) => const AccountScreen(),
           '/editProfile': (context) => EditProfileScreen(),
           '/myBooking': (context) => const BookingHistoryScreen(),
-          '/register': (context) => RegisterScreen(), // Màn hình đăng ký
+          '/register': (context) => RegisterScreen(),
           '/login': (context) => const LoginScreen(),
         },
-        // // Xử lý điều hướng đến EditProfileScreen với userId
-        // onGenerateRoute: (RouteSettings settings) {
-        //   if (settings.name == '/editProfile') {
-        //     final String userId =
-        //         settings.arguments as String; // Lấy userId từ arguments
-        //     return MaterialPageRoute(
-        //       builder: (context) => EditProfileScreen(userId: userId),
-        //     );
-        //   }
-        //   return null; // Trả về null nếu không tìm thấy route
-        // },
-        // Xử lý lỗi điều hướng không xác định
         onUnknownRoute: (settings) {
-          return MaterialPageRoute(builder: (context) => RegisterScreen());
+          return MaterialPageRoute(builder: (context) => const LoginScreen());
         },
       ),
     );

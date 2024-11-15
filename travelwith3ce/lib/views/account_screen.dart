@@ -1,25 +1,59 @@
-// account_screen.dart
-import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'dart:typed_data';
 
-class AccountScreen extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:travelwith3ce/controllers/userController.dart';
+import 'package:travelwith3ce/models/userModel.dart';
+import 'package:travelwith3ce/models/userModel.dart'; // Import your User model
+
+class AccountScreen extends StatefulWidget {
   const AccountScreen({Key? key}) : super(key: key);
+
+  @override
+  _AccountScreenState createState() => _AccountScreenState();
+}
+
+class _AccountScreenState extends State<AccountScreen> {
+  User? _user;
+  final UserController _userController = UserController();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? userId = prefs.getString('userId');
+
+    if (userId != null && userId.isNotEmpty) {
+      User? user = await _userController.getUserById(userId);
+      setState(() {
+        _user = user;
+      });
+    } else {
+      print("User ID is not available");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Account'),
-        backgroundColor: const Color(0xff9223F1), // Set the app bar color
+        backgroundColor: const Color(0xff9223F1),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // User Information Section
-            _buildUserInfo(),
-            const SizedBox(height: 20), // Spacing
-            // Options List
+            _user == null
+                ? const Center(child: CircularProgressIndicator())
+                : _buildUserInfo(),
+            const SizedBox(height: 20),
             Expanded(
               child: ListView(
                 children: [
@@ -50,66 +84,33 @@ class AccountScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.white, // Set the bottom navigation bar color
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconButton(
-              icon: const Icon(Icons.home, color: Colors.blue),
-              onPressed: () {
-                // Navigate to Home
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.favorite, color: Colors.blue),
-              onPressed: () {
-                // Navigate to Favorites
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.notifications, color: Colors.blue),
-              onPressed: () {
-                // Navigate to Notifications
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.person, color: Colors.blue),
-              onPressed: () {
-                // Navigate to Account
-              },
-            ),
-          ],
-        ),
-      ),
     );
   }
 
-  // User Info Widget
   Widget _buildUserInfo() {
-    return const Row(
+    return Row(
       children: [
         CircleAvatar(
-          radius: 40, // Adjust size as needed
-          backgroundImage:
-              AssetImage('assets/images/profile.png'), // Use the provided image
+          radius: 40,
+          backgroundImage: _user!.imgUser.isNotEmpty
+              ? MemoryImage(_getImageFromBase64(_user!.imgUser))
+              : const AssetImage('assets/images/profile.png'), // Default image
         ),
-        SizedBox(width: 16), // Spacing between avatar and text
+        const SizedBox(width: 16),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '3CE TRAVEL', // Replace with actual user name
-              style: TextStyle(
+              _user!.fullnameUser,
+              style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
               ),
             ),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             Text(
-              '3cetravel@gmail.com', // Replace with actual user email
-              style: TextStyle(color: Colors.white70),
+              _user!.email,
+              style: const TextStyle(color: Colors.black54),
             ),
           ],
         ),
@@ -117,27 +118,36 @@ class AccountScreen extends StatelessWidget {
     );
   }
 
-  // ListTile Builder
-  Widget _buildListTile(
-      {required String title,
-      required IconData icon,
-      required VoidCallback onTap}) {
+// Helper method to decode Base64 string
+  Uint8List _getImageFromBase64(String base64String) {
+    if (base64String.contains(',')) {
+      // Split only if there is a comma
+      return base64Decode(base64String.split(',')[1]);
+    } else {
+      // If no comma, decode directly
+      return base64Decode(base64String);
+    }
+  }
+
+  Widget _buildListTile({
+    required String title,
+    required IconData icon,
+    required VoidCallback onTap,
+  }) {
     return ListTile(
       title: Text(
         title,
-        style: const TextStyle(color: Colors.white), // White text color
+        style: const TextStyle(color: Colors.white),
       ),
-      leading: Icon(icon, color: Colors.white), // White icon color
+      leading: Icon(icon, color: Colors.white),
       onTap: onTap,
-      tileColor:
-          Colors.blueAccent.withOpacity(0.2), // Background color for each tile
+      tileColor: Colors.blueAccent.withOpacity(0.2),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10), // Rounded corners for tiles
+        borderRadius: BorderRadius.circular(10),
       ),
     );
   }
 
-  // Confirmation Dialog for Deleting Account
   void _showDeleteConfirmationDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -149,15 +159,13 @@ class AccountScreen extends StatelessWidget {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pop();
               },
               child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () {
-                // Handle account deletion logic here
-                Navigator.of(context).pop(); // Close the dialog
-                // Show a snackbar or a message indicating success
+                Navigator.of(context).pop();
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Account deleted successfully')),
                 );
