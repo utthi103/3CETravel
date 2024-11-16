@@ -25,7 +25,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final _addressController = TextEditingController();
 
   String? userId;
-  String? base64Image; // To store Base64 representation of the image
+  String? base64Image;
   final ImagePicker _picker = ImagePicker();
   UserController userController = UserController();
   final databaseRf = FirebaseDatabase.instance.ref("tb_user");
@@ -54,7 +54,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         _emailController.text = user.email;
         _phoneController.text = user.phone;
         _addressController.text = user.address;
-        base64Image = user.imgUser; // Load the user's image
+        base64Image = user.imgUser;
       } else {
         _showSnackBar("No user data found");
       }
@@ -68,14 +68,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       final XFile? selectedImage =
           await _picker.pickImage(source: ImageSource.gallery);
       if (selectedImage != null) {
-        print('Selected image path: ${selectedImage.path}');
         final imageBytes = await File(selectedImage.path).readAsBytes();
         setState(() {
           base64Image = base64Encode(imageBytes);
         });
-        print('Base64 Image after picking: $base64Image');
-      } else {
-        print('No image selected');
       }
     } catch (e) {
       print('Error picking image: $e');
@@ -84,8 +80,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   Future<void> _updateUserProfile() async {
     if (userId == null) return;
-
-    print('Base64 Image before update: $base64Image');
 
     final updatedData = {
       'fullname_user': _fullNameController.text,
@@ -96,13 +90,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       'imgUser': base64Image ?? '',
     };
 
-    print('Updating user profile with data: $updatedData');
-
     try {
       await databaseRf.child(userId!).update(updatedData);
       _showSnackBar('Profile updated successfully!');
     } catch (error) {
-      print("Failed to update profile: $error");
       _showSnackBar('Profile update failed!');
     }
   }
@@ -116,10 +107,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Profile', style: TextStyle(color: kTextColor)),
+        title: Text('Edit Profile',
+            style: TextStyle(
+                color: Colors.black)), // Set title text color to black
         backgroundColor: kPrimaryColor,
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -130,6 +123,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 8.0,
+                        offset: Offset(0, 4),
+                      ),
+                    ],
                   ),
                   height: 100,
                   width: 100,
@@ -145,42 +145,44 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 20),
-            TextFieldWidget(
-              controller: _fullNameController,
-              label: 'Full Name',
-              hint: 'Enter your full name',
-            ),
+            const SizedBox(height: 10),
+            _buildTextField(
+                _fullNameController, 'Full Name', 'Enter your full name'),
+            const SizedBox(height: 8),
+            _buildTextField(
+                _usernameController, 'Username', 'Enter your username'),
+            const SizedBox(height: 8),
+            _buildTextField(_emailController, 'Email', 'Enter your email'),
+            const SizedBox(height: 8),
+            _buildTextField(
+                _phoneController, 'Phone', 'Enter your phone number'),
+            const SizedBox(height: 8),
+            _buildTextField(
+                _addressController, 'Address', 'Enter your address'),
             const SizedBox(height: 16),
-            TextFieldWidget(
-              controller: _usernameController,
-              label: 'Username',
-              hint: 'Enter your username',
-            ),
-            const SizedBox(height: 16),
-            TextFieldWidget(
-              controller: _emailController,
-              label: 'Email',
-              hint: 'Enter your email',
-            ),
-            const SizedBox(height: 16),
-            TextFieldWidget(
-              controller: _phoneController,
-              label: 'Phone',
-              hint: 'Enter your phone number',
-            ),
-            const SizedBox(height: 16),
-            TextFieldWidget(
-              controller: _addressController,
-              label: 'Address',
-              hint: 'Enter your address',
-            ),
-            const SizedBox(height: 20),
-            EditButtonWidget(
-              onPressed: _updateUserProfile,
+            Center(
+              child: SizedBox(
+                width: 200,
+                child: EditButtonWidget(
+                  onPressed: _updateUserProfile,
+                ),
+              ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildTextField(
+      TextEditingController controller, String label, String hint) {
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      child: TextFieldWidget(
+        controller: controller,
+        label: label,
+        hint: hint,
       ),
     );
   }

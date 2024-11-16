@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:travelwith3ce/models/bottom_bar.dart';
 import 'package:travelwith3ce/views/home/home_header.dart';
 import 'package:travelwith3ce/views/home/search_bar.dart';
 import 'package:travelwith3ce/views/home/chips.dart';
@@ -18,7 +19,7 @@ class HomeScreen extends StatelessWidget {
           physics: const BouncingScrollPhysics(),
           children: [
             const HomeHeader(),
-            // const SearchBar(),
+            const SearchBarr(),
             const Chips(),
             PopularList(items: popular),
             NearbyGrid(data: nearby),

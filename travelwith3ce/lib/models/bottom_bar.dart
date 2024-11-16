@@ -107,3 +107,50 @@ class _BottomBarState extends State<BottomBar> {
     );
   }
 }
+// import 'package:flutter/material.dart';
+// import 'package:flutter_svg/flutter_svg.dart';
+// import 'package:travelwith3ce/views/favourite_screen.dart';
+// import 'package:travelwith3ce/views/home_screen.dart';
+// import 'package:travelwith3ce/views/notification_screen.dart';
+// import 'package:travelwith3ce/views/account_screen.dart';
+
+// class BottomBar extends StatefulWidget {
+//   const BottomBar({Key? key}) : super(key: key);
+
+//   @override
+//   _BottomBarState createState() => _BottomBarState();
+// }
+
+// class _BottomBarState extends State<BottomBar> {
+//   int _selectedIndex = 0;
+
+//   final List<Widget> _pages = [
+//     const HomeScreen(),
+//     FavouriteScreen(),
+//     NotificationScreen(),
+//     const AccountScreen(),
+//   ];
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: _pages[_selectedIndex], // Display the selected page
+//       bottomNavigationBar: BottomNavigationBar(
+//         currentIndex: _selectedIndex,
+//         onTap: (index) {
+//           setState(() {
+//             _selectedIndex = index; // Update the selected index
+//           });
+//         },
+//         items: const [
+//           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+//           BottomNavigationBarItem(
+//               icon: Icon(Icons.favorite), label: 'Favorites'),
+//           BottomNavigationBarItem(
+//               icon: Icon(Icons.notifications), label: 'Notifications'),
+//           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),
+//         ],
+//       ),
+//     );
+//   }
+// }

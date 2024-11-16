@@ -21,7 +21,7 @@ class TextFieldWidget extends StatelessWidget {
           label,
           style: TextStyle(
             fontSize: 16,
-            color: kTextColor,
+            color: kTextColorr,
             fontWeight: FontWeight.bold,
           ),
         ),

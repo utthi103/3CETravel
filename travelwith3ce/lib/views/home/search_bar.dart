@@ -1,11 +1,10 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
 import '../../constant.dart';
 
-class SearchBar extends StatelessWidget {
-  const SearchBar({Key? key}) : super(key: key);
+class SearchBarr extends StatelessWidget {
+  const SearchBarr({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,23 +16,26 @@ class SearchBar extends StatelessWidget {
           children: [
             Row(
               children: [
-                Container(
-                  height: 44,
-                  width: MediaQuery.of(context).size.width - 109,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                  decoration: BoxDecoration(
-                    color: kPrimaryColor,
-                    border: Border.all(color: kShadeColor),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: TextField(
-                    style: TextStyle(color: kAccentColor),
-                    decoration: InputDecoration(
-                      hintText: 'Search Hotel',
-                      icon: SvgPicture.asset('assets/icons/search.svg'),
-                      border: InputBorder.none,
-                      hintStyle: nunitoRegular12.copyWith(color: kAccentColor),
+                Expanded(
+                  // Use Expanded to take up available space
+                  child: Container(
+                    height: 44,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 10),
+                    decoration: BoxDecoration(
+                      color: kPrimaryColor,
+                      border: Border.all(color: kShadeColor),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: TextField(
+                      style: TextStyle(color: kAccentColor),
+                      decoration: InputDecoration(
+                        hintText: 'Search Hotel',
+                        icon: SvgPicture.asset('assets/icons/search.svg'),
+                        border: InputBorder.none,
+                        hintStyle:
+                            nunitoRegular12.copyWith(color: kAccentColor),
+                      ),
                     ),
                   ),
                 ),

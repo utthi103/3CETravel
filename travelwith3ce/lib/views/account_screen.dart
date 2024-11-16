@@ -1,11 +1,9 @@
 import 'dart:convert';
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travelwith3ce/controllers/userController.dart';
 import 'package:travelwith3ce/models/userModel.dart';
-import 'package:travelwith3ce/models/userModel.dart'; // Import your User model
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({Key? key}) : super(key: key);
@@ -94,37 +92,37 @@ class _AccountScreenState extends State<AccountScreen> {
           radius: 40,
           backgroundImage: _user!.imgUser.isNotEmpty
               ? MemoryImage(_getImageFromBase64(_user!.imgUser))
-              : const AssetImage('assets/images/profile.png'), // Default image
+              : const AssetImage('assets/images/profile.png'),
         ),
         const SizedBox(width: 16),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              _user!.fullnameUser,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                _user!.fullnameUser,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xff9223F1),
+                ),
               ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              _user!.email,
-              style: const TextStyle(color: Colors.black54),
-            ),
-          ],
+              const SizedBox(height: 4),
+              Text(
+                _user!.email,
+                style: const TextStyle(color: Colors.black54),
+              ),
+            ],
+          ),
         ),
       ],
     );
   }
 
-// Helper method to decode Base64 string
   Uint8List _getImageFromBase64(String base64String) {
     if (base64String.contains(',')) {
-      // Split only if there is a comma
       return base64Decode(base64String.split(',')[1]);
     } else {
-      // If no comma, decode directly
       return base64Decode(base64String);
     }
   }
@@ -134,16 +132,19 @@ class _AccountScreenState extends State<AccountScreen> {
     required IconData icon,
     required VoidCallback onTap,
   }) {
-    return ListTile(
-      title: Text(
-        title,
-        style: const TextStyle(color: Colors.white),
-      ),
-      leading: Icon(icon, color: Colors.white),
-      onTap: onTap,
-      tileColor: Colors.blueAccent.withOpacity(0.2),
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      elevation: 4,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
+      ),
+      child: ListTile(
+        title: Text(
+          title,
+          style: const TextStyle(color: Color(0xff9223F1), fontSize: 16),
+        ),
+        leading: Icon(icon, color: Color(0xff9223F1)),
+        onTap: onTap,
       ),
     );
   }

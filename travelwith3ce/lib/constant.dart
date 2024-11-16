@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 Color kPrimaryColor = const Color(0xff262626);
 Color kSecondaryColor = const Color(0xff9223F1);
-Color kTextColor = const Color(0xffffffff);
+Color kTextColor = const Color.fromARGB(255, 250, 248, 251);
+Color kTextColorr = const Color.fromARGB(255, 4, 4, 4);
 Color kAccentColor = Colors.white54;
 Color kShadeColor = const Color(0xff3f3f3f);
 Color kBottomBarColor = const Color(0xff121212);

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:travelwith3ce/controllers/userController.dart';
+import 'package:travelwith3ce/models/bottom_bar.dart';
 import 'package:travelwith3ce/models/userModel.dart';
 import 'package:travelwith3ce/views/account_screen.dart';
 import 'package:travelwith3ce/views/forgot_password.dart';
+import 'package:travelwith3ce/views/home_screen.dart';
 import 'package:travelwith3ce/views/signup.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -186,7 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  const AccountScreen(), // Đổi trang đích nếu cần
+                                  const BottomBar(), // Đổi trang đích nếu cần
                             ),
                           );
                         } else {
