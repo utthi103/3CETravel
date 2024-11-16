@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        initialRoute: '/', // Set the initial route
+        initialRoute: '/home', // Set the initial route
         routes: {
           '/': (context) => StreamBuilder<User?>(
                 stream: FirebaseAuth.instance.authStateChanges(),
@@ -62,6 +62,7 @@ class MyApp extends StatelessWidget {
           '/register': (context) => RegisterScreen(), // New route added
           '/loginStore': (context) =>
               const LoginStoreScreen(), // New route added
+          '/login': (context) => LoginScreen(),
         },
         onUnknownRoute: (settings) {
           return MaterialPageRoute(builder: (context) => const LoginScreen());

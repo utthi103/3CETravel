@@ -1,13 +1,17 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
 import 'package:travelwith3ce/models/userModel.dart'; // Import model User
 import 'package:firebase_database/firebase_database.dart'; // Import Firebase Realtime Database
 import 'package:crypto/crypto.dart';
+import 'package:firebase_auth/firebase_auth.dart'
+    as auth; // Sử dụng alias cho FirebaseAuth
 
 class UserController {
   final DatabaseReference _database = FirebaseDatabase.instance.ref();
+  final auth.FirebaseAuth _auth = auth.FirebaseAuth.instance; // Sử dụng alias
 
   // Hàm để đăng ký tài khoản người dùng mới
   Future<void> registerUser({
@@ -194,6 +198,19 @@ class UserController {
     } else {
       // If no comma, decode directly
       return base64Decode(base64String);
+    }
+  }
+
+  // Hàm kiểm tra xem có người dùng nào đang đăng nhập hay không
+  void checkUserLoggedIn() {
+    auth.User? user = _auth.currentUser; // Sử dụng alias
+
+    if (user != null) {
+      print(
+          'User is logged in: ${user.uid}'); // In ra user ID nếu đang đăng nhập
+    } else {
+      print(
+          'Error: No user is logged in.'); // In ra lỗi nếu không có người dùng nào
     }
   }
 }

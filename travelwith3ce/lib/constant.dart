@@ -35,7 +35,7 @@ TextStyle nunitoRegular17 = TextStyle(
 TextStyle nunito8 = TextStyle(
   fontSize: 8,
   fontWeight: FontWeight.w600,
-  color: kTextColor,
+  color: kTextColorr,
 );
 
 TextStyle nunito10 = TextStyle(
@@ -47,7 +47,7 @@ TextStyle nunito10 = TextStyle(
 TextStyle nunito18 = TextStyle(
   fontSize: 18,
   fontWeight: FontWeight.bold,
-  color: kTextColor,
+  color: kTextColorr,
 );
 
 TextStyle nunito23 = TextStyle(
