@@ -4,6 +4,7 @@ import 'package:travelwith3ce/views/home/home_header.dart';
 import 'package:travelwith3ce/views/home_screen.dart';
 import 'package:travelwith3ce/views/login.dart';
 import 'package:travelwith3ce/views/my_booking_screen.dart';
+import 'package:travelwith3ce/views/store/loginStore.dart';
 import 'firebase_options.dart';
 import 'package:travelwith3ce/views/signup.dart';
 import 'package:travelwith3ce/models/bottom_bar.dart';
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        initialRoute: '/', // Set the initial route
+        initialRoute: '/loginStore', // Set the initial route
         routes: {
           '/': (context) => StreamBuilder<User?>(
                 stream: FirebaseAuth.instance.authStateChanges(),
@@ -59,6 +60,7 @@ class MyApp extends StatelessWidget {
           '/myBooking': (context) => const BookingHistoryScreen(),
           '/register': (context) => RegisterScreen(),
           '/login': (context) => const LoginScreen(),
+          '/loginStore': (context) => const LoginStoreScreen(),
         },
         onUnknownRoute: (settings) {
           return MaterialPageRoute(builder: (context) => const LoginScreen());
