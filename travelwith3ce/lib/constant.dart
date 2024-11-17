@@ -47,7 +47,7 @@ TextStyle nunito10 = TextStyle(
 TextStyle nunito18 = TextStyle(
   fontSize: 18,
   fontWeight: FontWeight.bold,
-  color: kTextColor,
+  color: kTextColorr,
 );
 
 TextStyle nunito23 = TextStyle(

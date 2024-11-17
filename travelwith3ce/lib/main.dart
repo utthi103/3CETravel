@@ -65,6 +65,7 @@ class MyApp extends StatelessWidget {
               const LoginStoreScreen(), // New route added
           '/login': (context) => LoginScreen(),
           '/admin': (context) => AdminDashboard(),
+          '/favourite': (context) => FavouriteScreen(),
         },
         onUnknownRoute: (settings) {
           return MaterialPageRoute(builder: (context) => const LoginScreen());

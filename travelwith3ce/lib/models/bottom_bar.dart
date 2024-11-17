@@ -20,7 +20,7 @@ class _BottomBarState extends State<BottomBar> {
 
   // List of pages corresponding to the bottom navigation buttons
   final List<Widget> _pages = [
-    const HomeScreen(),
+    HomeScreen(),
     FavouriteScreen(), // Add your FavouriteScreen
     NotificationScreen(), // Add your NotificationScreen
     AccountScreen(), // Add your AccountScreen
