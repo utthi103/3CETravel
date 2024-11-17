@@ -83,18 +83,18 @@ class _StoreDashboardState extends State<StoreDashboard> {
                 );
               },
             ),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('Quản lý cửa hàng'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => StoreManagementScreen()),
-                );
-                // Điều hướng đến màn hình cài đặt
-              },
-            ),
+            // ListTile(
+            //   leading: const Icon(Icons.settings),
+            //   title: const Text('Quản lý cửa hàng'),
+            //   onTap: () {
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(
+            //           builder: (context) => StoreManagementScreen()),
+            //     );
+            //     // Điều hướng đến màn hình cài đặt
+            //   },
+            // ),
           ],
         ),
       ),

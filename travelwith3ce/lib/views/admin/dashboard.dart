@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:travelwith3ce/views/admin/createaccount.dart';
+import 'package:travelwith3ce/views/admin/room_management.dart';
+import 'package:travelwith3ce/views/admin/store_management.dart';
 import 'package:travelwith3ce/views/admin/user_management.dart';
 
 void main() {
@@ -72,16 +75,35 @@ class _AdminDashboardState extends State<AdminDashboard> {
             ),
             ListTile(
               leading: const Icon(Icons.inventory),
-              title: const Text('Quản lý sản phẩm'),
+              title: const Text('Quản lý phòng'),
               onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AllRoomListScreen()),
+                );
                 // Điều hướng đến màn hình quản lý sản phẩm
               },
             ),
             ListTile(
               leading: const Icon(Icons.settings),
-              title: const Text('Cài đặt'),
+              title: const Text('Quản lý cửa hàng'),
               onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => StoreManagementScreen()),
+                );
                 // Điều hướng đến màn hình cài đặt
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: const Text('Tạo tài khoản'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateStoreScreen()),
+                );
               },
             ),
           ],

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:travelwith3ce/controllers/userController.dart';
 
@@ -90,7 +92,12 @@ class UserDataSource extends DataTableSource {
           children: [
             CircleAvatar(
               radius: 16,
-              backgroundImage: AssetImage('assets/images/avt.jpg'),
+              backgroundImage: user['imgUser'] != null
+                  ? MemoryImage(
+                      base64Decode(user['imgUser']),
+                    )
+                  : AssetImage('assets/images/avt.jpg')
+                      as ImageProvider, // Ảnh mặc định
             ),
             const SizedBox(width: 8),
             Text(user['fullname_user'] ?? 'N/A'),

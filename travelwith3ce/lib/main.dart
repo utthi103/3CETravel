@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:travelwith3ce/controllers/current_user_provider.dart';
 import 'package:travelwith3ce/models/bottom_bar.dart';
+import 'package:travelwith3ce/views/admin/dashboard.dart';
 import 'package:travelwith3ce/views/login.dart';
 import 'package:travelwith3ce/views/signup.dart';
 import 'package:travelwith3ce/views/store/loginStore.dart';
@@ -63,6 +64,7 @@ class MyApp extends StatelessWidget {
           '/loginStore': (context) =>
               const LoginStoreScreen(), // New route added
           '/login': (context) => LoginScreen(),
+          '/admin': (context) => AdminDashboard(),
         },
         onUnknownRoute: (settings) {
           return MaterialPageRoute(builder: (context) => const LoginScreen());

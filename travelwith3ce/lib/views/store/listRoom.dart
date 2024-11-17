@@ -3,7 +3,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert'; // Thêm thư viện để xử lý base64
 import 'dart:typed_data';
 
-import 'package:travelwith3ce/controllers/roomController.dart'; // Để sử dụng Uint8List
+import 'package:travelwith3ce/controllers/roomController.dart';
+import 'package:travelwith3ce/views/store/editRoom.dart';
 
 class RoomListScreen extends StatefulWidget {
   @override
@@ -26,16 +27,13 @@ class _RoomListScreenState extends State<RoomListScreen> {
   }
 
   Future<void> _initializeData() async {
-    // Lấy userId từ SharedPreferences
     userId = await _loadUserId();
 
-    // Gọi hàm fetchRooms với userId
     if (userId != null) {
       setState(() {
         _roomFuture = RoomController().fetchRoomsByHotelId(userId!);
       });
     } else {
-      // Xử lý khi không tìm thấy userId
       setState(() {
         _roomFuture = Future.value([]);
       });
@@ -53,24 +51,18 @@ class _RoomListScreenState extends State<RoomListScreen> {
         future: _roomFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            // Khi dữ liệu đang tải
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            // Nếu có lỗi xảy ra
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            // Nếu không có dữ liệu
             return Center(child: Text('No rooms found.'));
           } else {
-            // Khi có dữ liệu, hiển thị danh sách các phòng
             List<Map<String, dynamic>> rooms = snapshot.data!;
             return ListView.builder(
               padding: EdgeInsets.all(8.0),
               itemCount: rooms.length,
               itemBuilder: (context, index) {
                 Map<String, dynamic> room = rooms[index];
-
-                // Hiển thị các ảnh phòng từ base64
                 List<Widget> roomImages =
                     (room['room_images'] ?? []).map<Widget>((base64Image) {
                   Uint8List bytes = base64Decode(base64Image);
@@ -104,36 +96,111 @@ class _RoomListScreenState extends State<RoomListScreen> {
                           ),
                         ),
                         SizedBox(height: 8),
+                        Text("Loại phòng: ${room['room_type'] ?? 'N/A'}"),
                         Text(
-                          "Type: ${room['room_type'] ?? 'N/A'}",
-                          style: TextStyle(fontSize: 14),
+                          "Giá phòng: ${room['room_price'] != null ? '${room['room_price']} VNĐ' : 'N/A'}",
                         ),
                         Text(
-                          "Price: \$${room['room_price'] ?? 'N/A'}",
-                          style: TextStyle(fontSize: 14),
+                          "Sức chứa: ${room['room_capacity']?.toString() ?? 'N/A'}",
                         ),
+                        Text("Trạng thái: ${room['room_status'] ?? 'N/A'}"),
                         Text(
-                          "Capacity: ${room['room_capacity']?.toString() ?? 'N/A'}",
-                          style: TextStyle(fontSize: 14),
-                        ),
-                        Text(
-                          "Status: ${room['room_status'] ?? 'N/A'}",
-                          style: TextStyle(fontSize: 14),
-                        ),
-                        Text(
-                          "Description: ${room['room_description'] ?? 'N/A'}",
-                          style: TextStyle(fontSize: 14),
+                          "Mô tả: ${room['room_description'] ?? 'N/A'}",
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
                         Text(
-                          "Amenities: ${(room['room_amenities'] ?? []).join(', ')}",
-                          style: TextStyle(fontSize: 14),
+                          "Tiện nghi: ${(room['room_amenities'] ?? []).join(', ')}",
                         ),
                         SizedBox(height: 8),
                         SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Row(children: roomImages),
+                        ),
+                        SizedBox(height: 8),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            // Nút Edit
+                            TextButton.icon(
+                              onPressed: () async {
+                                final result = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        EditRoomScreen(roomData: room),
+                                  ),
+                                );
+                                if (result == 'updated') {
+                                  _initializeData(); // Làm mới danh sách khi quay lại sau khi cập nhật
+                                }
+                              },
+                              icon: Icon(Icons.edit, color: Colors.blue),
+                              label: Text('Edit',
+                                  style: TextStyle(color: Colors.blue)),
+                            ),
+                            SizedBox(width: 8),
+                            // Nút Delete
+                            TextButton.icon(
+                              onPressed: () {
+                                // Hiển thị dialog xác nhận xóa
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text('Confirm Deletion'),
+                                      content: Text(
+                                          'Are you sure you want to delete this room?'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(
+                                                context); // Đóng dialog nếu nhấn Cancel
+                                          },
+                                          child: Text('Cancel'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () async {
+                                            Navigator.pop(
+                                                context); // Đóng dialog sau khi xác nhận xóa
+
+                                            try {
+                                              // Gọi hàm deleteRoom từ RoomController
+                                              await RoomController()
+                                                  .deleteRoom(room['room_id']);
+
+                                              // Hiển thị snackbar thông báo thành công
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                    content: Text(
+                                                        'Room deleted successfully!')),
+                                              );
+
+                                              // Reload lại danh sách phòng (có thể gọi lại _initializeData() nếu cần)
+                                              _initializeData();
+                                            } catch (e) {
+                                              // Hiển thị lỗi nếu có vấn đề khi xóa
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                    content: Text(
+                                                        'Error deleting room: $e')),
+                                              );
+                                            }
+                                          },
+                                          child: Text('Delete'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                              icon: Icon(Icons.delete, color: Colors.red),
+                              label: Text('Delete',
+                                  style: TextStyle(color: Colors.red)),
+                            )
+                          ],
                         ),
                       ],
                     ),
