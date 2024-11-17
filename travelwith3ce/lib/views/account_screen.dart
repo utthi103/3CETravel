@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travelwith3ce/controllers/userController.dart';
 import 'package:travelwith3ce/models/userModel.dart';
+import 'package:firebase_auth/firebase_auth.dart'
+    as auth; // Sử dụng alias cho FirebaseAuth
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({Key? key}) : super(key: key);
@@ -15,6 +17,8 @@ class AccountScreen extends StatefulWidget {
 class _AccountScreenState extends State<AccountScreen> {
   User? _user;
   final UserController _userController = UserController();
+  final auth.FirebaseAuth _auth =
+      auth.FirebaseAuth.instance; // Khởi tạo FirebaseAuth với alias
 
   @override
   void initState() {
@@ -32,8 +36,35 @@ class _AccountScreenState extends State<AccountScreen> {
         _user = user;
       });
     } else {
-      print("User ID is not available");
+      _showRegistrationPrompt();
     }
+  }
+
+  void _showRegistrationPrompt() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Nofication"),
+          content: const Text("Let's register if you don't have an account."),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.pushNamed(context, '/login');
+              },
+              child: const Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -67,6 +98,13 @@ class _AccountScreenState extends State<AccountScreen> {
                     icon: Icons.book,
                     onTap: () {
                       Navigator.pushNamed(context, '/myBooking');
+                    },
+                  ),
+                  _buildListTile(
+                    title: 'Log Out',
+                    icon: Icons.logout,
+                    onTap: () {
+                      _logOut();
                     },
                   ),
                   _buildListTile(
@@ -141,12 +179,28 @@ class _AccountScreenState extends State<AccountScreen> {
       child: ListTile(
         title: Text(
           title,
-          style: const TextStyle(color: Color(0xff9223F1), fontSize: 16),
+          style: const TextStyle(
+              color: Color.fromARGB(255, 0, 0, 0), fontSize: 16),
         ),
-        leading: Icon(icon, color: Color(0xff9223F1)),
+        leading: Icon(icon, color: Color.fromARGB(255, 146, 35, 241)),
         onTap: onTap,
       ),
     );
+  }
+
+  void _logOut() async {
+    try {
+      await _auth.signOut(); // Đăng xuất người dùng
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove('userId'); // Xóa userId khỏi SharedPreferences
+      Navigator.pushReplacementNamed(
+          context, '/login'); // Điều hướng đến LoginScreen
+    } catch (e) {
+      print("Error signing out: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Error signing out.')),
+      );
+    }
   }
 
   void _showDeleteConfirmationDialog(BuildContext context) {

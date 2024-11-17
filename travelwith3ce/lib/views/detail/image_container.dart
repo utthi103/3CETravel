@@ -2,7 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:travelwith3ce/views/detail/image_reviews.dart';
-import 'package:travelwith3ce/views/detail/image_reviews.dart';
+import 'package:shared_preferences/shared_preferences.dart'; // Thêm import để kiểm tra trạng thái đăng nhập
 
 import '../../constant.dart';
 
@@ -47,15 +47,28 @@ class ImageContainer extends StatelessWidget {
           right: 35,
           child: FadeInUp(
             duration: const Duration(milliseconds: 500),
-            child: ClipOval(
-              child: Container(
-                height: 23,
-                width: 23,
-                color: kTextColor,
-                child: Padding(
-                  padding: const EdgeInsets.all(5),
-                  child: SvgPicture.asset(
-                    'assets/icons/heart.svg',
+            child: GestureDetector(
+              // Thêm GestureDetector để xử lý sự kiện nhấn
+              onTap: () async {
+                final prefs = await SharedPreferences.getInstance();
+                String? userId = prefs.getString('userId');
+
+                if (userId == null) {
+                  _showLoginPrompt(context);
+                } else {
+                  // Thực hiện hành động cho người dùng đã đăng nhập
+                }
+              },
+              child: ClipOval(
+                child: Container(
+                  height: 23,
+                  width: 23,
+                  color: kTextColor,
+                  child: Padding(
+                    padding: const EdgeInsets.all(5),
+                    child: SvgPicture.asset(
+                      'assets/icons/heart.svg',
+                    ),
                   ),
                 ),
               ),
@@ -64,6 +77,34 @@ class ImageContainer extends StatelessWidget {
         ),
         const ImageReviews(),
       ],
+    );
+  }
+
+  void _showLoginPrompt(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Notification"),
+          content: const Text("You must log in first."),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Đóng hộp thoại
+              },
+              child: const Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Đóng hộp thoại
+                Navigator.pushNamed(
+                    context, '/login'); // Điều hướng đến màn hình đăng nhập
+              },
+              child: const Text("OK"),
+            ),
+          ],
+        );
+      },
     );
   }
 }

@@ -62,6 +62,7 @@ class MyApp extends StatelessWidget {
           '/register': (context) => RegisterScreen(), // New route added
           '/loginStore': (context) =>
               const LoginStoreScreen(), // New route added
+          '/login': (context) => LoginScreen(),
         },
         onUnknownRoute: (settings) {
           return MaterialPageRoute(builder: (context) => const LoginScreen());
