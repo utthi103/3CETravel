@@ -49,6 +49,28 @@ class RoomController {
     }
   }
 
+  Future<List<Map<String, dynamic>>> fetchAllRooms() async {
+    try {
+      // Lấy toàn bộ dữ liệu các phòng từ Firebase
+      final snapshot = await _roomRef.get();
+      List<Map<String, dynamic>> rooms = [];
+
+      if (snapshot.exists) {
+        for (var child in snapshot.children) {
+          // Chuyển đổi dữ liệu của mỗi phòng thành Map<String, dynamic>
+          Map<String, dynamic> data =
+              Map<String, dynamic>.from(child.value as Map);
+          rooms.add(data); // Thêm vào danh sách
+        }
+      }
+      return rooms; // Trả về danh sách các phòng
+    } catch (e) {
+      // Xử lý lỗi
+      print("Failed to fetch all rooms: $e");
+      return [];
+    }
+  }
+
   Future<List<Map<String, dynamic>>> fetchRoomsByHotelId(String hotelId) async {
     try {
       // Lấy toàn bộ dữ liệu các phòng
@@ -72,6 +94,68 @@ class RoomController {
       // Xử lý lỗi
       print("Failed to fetch rooms by hotelId: $e");
       return [];
+    }
+  }
+
+  Future<void> updateRoom({
+    required String roomId,
+    required String roomName,
+    required String roomType,
+    required double roomPrice,
+    required String roomStatus,
+    required int roomCapacity,
+    required List<String> roomImages,
+    required String roomDescription,
+    required List<String> roomAmenities,
+    required String hotelId,
+    required String createdAt,
+    required String updatedAt, // createdAt là String
+  }) async {
+    try {
+      // Chuyển đổi createdAt từ String sang DateTime
+      DateTime createdAtDateTime = DateTime.parse(createdAt);
+
+      // Tạo đối tượng RoomModel mới từ dữ liệu cập nhật
+      RoomModel room = RoomModel(
+        roomId: roomId,
+        roomName: roomName,
+        roomType: roomType,
+        roomPrice: roomPrice,
+        roomStatus: roomStatus,
+        roomCapacity: roomCapacity,
+        roomImages: roomImages,
+        roomDescription: roomDescription,
+        roomAmenities: roomAmenities,
+        hotelId: hotelId,
+        createdAt: createdAtDateTime, // Giữ nguyên createdAt dưới dạng DateTime
+        updatedAt: DateTime.now(), // Cập nhật thời gian sửa đổi
+      );
+
+      // Chuyển RoomModel thành JSON để cập nhật vào Firebase
+      Map<String, dynamic> roomData = room.toJson();
+
+      // Cập nhật thông tin phòng trong Firebase
+      await _roomRef.child(roomId).update(roomData);
+
+      // Thông báo thành công
+      print("Room updated successfully!");
+    } catch (e) {
+      // Xử lý lỗi
+      print("Failed to update room: $e");
+      rethrow; // Ném lại lỗi nếu cần xử lý thêm ở UI
+    }
+  }
+
+  // Hàm xóa phòng
+  Future<void> deleteRoom(String roomId) async {
+    try {
+      // Xóa phòng từ Firebase Realtime Database
+      await _roomRef.child(roomId).remove();
+
+      // Nếu dùng Firestore thay vì Realtime Database:
+      // await _db.collection('rooms').doc(roomId).delete();
+    } catch (e) {
+      throw Exception('Failed to delete room: $e');
     }
   }
 
