@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:travelwith3ce/views/detail/image_container.dart';
 import 'package:travelwith3ce/views/detail/detail_info.dart';
@@ -10,14 +12,16 @@ class DetailScreen extends StatefulWidget {
   final String title;
   final String rawRating;
   final String price;
+  final List<String> amenities;
 
-  const DetailScreen(
-      {Key? key,
-      required this.imageUrl,
-      required this.title,
-      required this.rawRating,
-      required this.price})
-      : super(key: key);
+  const DetailScreen({
+    Key? key,
+    required this.imageUrl,
+    required this.title,
+    required this.rawRating,
+    required this.price,
+    required this.amenities,
+  }) : super(key: key);
 
   @override
   _DetailScreenState createState() => _DetailScreenState();
@@ -31,13 +35,19 @@ class _DetailScreenState extends State<DetailScreen> {
         child: ListView(
           physics: const BouncingScrollPhysics(),
           children: [
-            ImageContainer(imageUrl: widget.imageUrl),
+            Image.memory(
+              base64Decode(widget.imageUrl), // Giải mã base64 thành mảng byte
+              scale: 4,
+              fit: BoxFit.cover,
+            ),
             DetailInfo(
               title: widget.title,
               rawRating: widget.rawRating,
               price: widget.price,
             ),
-            const Facilities(),
+            Facilities(
+              amenities: widget.amenities,
+            ),
             const Description(),
             const CustomButton(),
           ],

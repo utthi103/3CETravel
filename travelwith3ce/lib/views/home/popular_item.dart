@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:travelwith3ce/views/detail_screen.dart';
@@ -9,14 +11,16 @@ class PopularItem extends StatelessWidget {
   final String name;
   final String price;
   final String rating;
+  final List<String> amenities;
 
-  const PopularItem({
-    Key? key,
-    required this.imageUrl,
-    required this.name,
-    required this.price,
-    required this.rating,
-  }) : super(key: key);
+  const PopularItem(
+      {Key? key,
+      required this.imageUrl,
+      required this.name,
+      required this.price,
+      required this.rating,
+      required this.amenities})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +38,7 @@ class PopularItem extends StatelessWidget {
                   title: name,
                   price: price,
                   rawRating: rating,
+                  amenities: amenities,
                 ),
               ),
             );
@@ -46,13 +51,13 @@ class PopularItem extends StatelessWidget {
                   height: MediaQuery.of(context).size.height * 0.3,
                   width: MediaQuery.of(context).size.width * 0.5,
                   child: ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(15)),
-                    child: Image.asset(
-                      imageUrl,
-                      scale: 4,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+                      borderRadius: const BorderRadius.all(Radius.circular(15)),
+                      child: Image.memory(
+                        base64Decode(
+                            imageUrl), // Giải mã base64 thành mảng byte
+                        scale: 4,
+                        fit: BoxFit.cover,
+                      )),
                 ),
               ),
               Positioned(
@@ -79,37 +84,46 @@ class PopularItem extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
+                    Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           name,
-                          style: nunito14,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                         Text(
-                          price,
+                          '${price} VNĐ',
                           style: nunito14.copyWith(
                             fontWeight: FontWeight.w900,
                           ),
                         ),
                       ],
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Column(
                       children: [
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            SvgPicture.asset('assets/icons/star.svg'),
+                            Icon(
+                              Icons.star,
+                              size: 20,
+                              color: const Color.fromARGB(255, 241, 221, 41),
+                            ),
                             const SizedBox(width: 4),
                             Text(
                               rating,
                               style: nunito8.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
+                                  fontWeight: FontWeight.bold, fontSize: 12),
                             ),
                           ],
                         ),
-                        Text('per night', style: nunito8),
                       ],
                     )
                   ],

@@ -45,6 +45,29 @@ class StoreController {
     }
   }
 
+  // Hàm lấy tất cả dữ liệu cửa hàng từ Firebase
+  Future<List<Store>> fetchData() async {
+    try {
+      DataSnapshot snapshot = await _storeRef.get();
+      if (snapshot.exists) {
+        Map<dynamic, dynamic> storesData =
+            snapshot.value as Map<dynamic, dynamic>;
+
+        // Chuyển đổi dữ liệu từ Map sang danh sách các đối tượng Store
+        List<Store> storesList = storesData.entries.map((entry) {
+          return Store.fromJson(Map<String, dynamic>.from(entry.value));
+        }).toList();
+
+        return storesList;
+      } else {
+        return [];
+      }
+    } catch (e) {
+      print("Failed to fetch store data: $e");
+      rethrow;
+    }
+  }
+
   // Hàm fetchStores để lấy danh sách các cửa hàng
   Future<List<Map<String, dynamic>>> fetchStores() async {
     try {

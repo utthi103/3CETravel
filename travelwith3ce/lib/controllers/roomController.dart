@@ -74,4 +74,29 @@ class RoomController {
       return [];
     }
   }
+
+  Future<List<RoomModel>> fetchAllRoom() async {
+    final databaseReference = FirebaseDatabase.instance.ref();
+
+    // Lấy dữ liệu từ Realtime Database
+    DatabaseEvent event = await databaseReference.child('tb_room').once();
+
+    List<RoomModel> roomList = [];
+
+    // Lấy DataSnapshot từ event
+    DataSnapshot snapshot = event.snapshot;
+    print("đã chạy hàm fetchRoom");
+    if (snapshot.exists) {
+      // Ép kiểu snapshot.value thành Map<dynamic, dynamic>
+      Map<dynamic, dynamic> rooms =
+          Map<dynamic, dynamic>.from(snapshot.value as Map);
+      // Duyệt qua các phòng và tạo danh sách RoomModel từ JSON
+      rooms.forEach((key, value) {
+        roomList.add(RoomModel.fromJson(Map<String, dynamic>.from(
+            value))); // Sử dụng fromJson để chuyển đổi dữ liệu
+      });
+    }
+
+    return roomList;
+  }
 }

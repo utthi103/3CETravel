@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:animate_do/animate_do.dart';
+import 'package:travelwith3ce/models/roomModel.dart';
 import 'package:travelwith3ce/views/home/popular_item.dart';
 import 'package:travelwith3ce/views/home/section_title.dart';
 
 class PopularList extends StatelessWidget {
-  final List items;
+  final List<RoomModel> items;
 
   const PopularList({
     Key? key,
@@ -14,6 +15,7 @@ class PopularList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("list in popular : ${items}");
     return FadeInUp(
       duration: const Duration(milliseconds: 1100),
       child: Column(
@@ -27,15 +29,16 @@ class PopularList extends StatelessWidget {
               child: ListView.builder(
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
-                itemCount: items.length,
+                itemCount: 3,
                 itemBuilder: (context, index) {
                   var item = items[index];
 
                   return PopularItem(
-                    imageUrl: item['imageUrl'],
-                    name: item['name'],
-                    price: item['price'],
-                    rating: item['rating'],
+                    imageUrl: item.roomImages[0],
+                    name: item.roomName,
+                    price: item.roomPrice.toString(),
+                    rating: '4.5',
+                    amenities: item.roomAmenities,
                   );
                 },
               ),

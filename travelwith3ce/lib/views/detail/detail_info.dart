@@ -44,14 +44,14 @@ class _DetailInfoState extends State<DetailInfo> {
                         SvgPicture.asset('assets/icons/star.svg'),
                         const SizedBox(width: 4),
                         Text(
-                          rating[0],
+                          widget.rawRating,
                           style: nunitoRegular12.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         const SizedBox(width: 4),
                         Text(
-                          rating[1],
+                          '5',
                           style: nunito10.copyWith(
                             color: kAccentColor,
                           ),

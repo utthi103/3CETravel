@@ -27,6 +27,8 @@ List<String> nearby = [
 List<String> facilities = [
   "assets/icons/wifi.svg",
   "assets/icons/weightlift.svg",
+  "assets/icons/receptionist.svg",
+  "assets/icons/air-conditioner-icon.svg",
   "assets/icons/drink.svg",
   "assets/icons/park.svg",
   "assets/icons/pool.svg"

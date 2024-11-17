@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        initialRoute: '/', // Set the initial route
+        initialRoute: '/home', // Set the initial route
         routes: {
           '/': (context) => StreamBuilder<User?>(
                 stream: FirebaseAuth.instance.authStateChanges(),
