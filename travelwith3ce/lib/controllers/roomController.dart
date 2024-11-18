@@ -295,23 +295,6 @@ class RoomController {
     }
   }
 
-  Future<String?> fetchRoomDescription(String roomId) async {
-  try {
-    final databaseReference = FirebaseDatabase.instance.ref('tb_room/$roomId');
-    DatabaseEvent event = await databaseReference.once();
-
-    if (event.snapshot.exists) {
-      Map<dynamic, dynamic> roomData =
-          Map<dynamic, dynamic>.from(event.snapshot.value as Map);
-      return roomData['room_description'] as String?;
-    }
-    return null;
-  } catch (error) {
-    print("Error fetching room details: $error");
-    return null;
-  }
-}
-  
   Future<List<RoomModel>> fetchFavouriteRooms(
       String userId, String roomId) async {
     final databaseReference = FirebaseDatabase.instance.ref();

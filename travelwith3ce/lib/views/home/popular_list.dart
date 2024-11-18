@@ -76,7 +76,6 @@ class PopularList extends StatelessWidget {
                         rating: '4.5',
                         amenities: item.roomAmenities,
                         like: check ? '1' : '0',
-                        description: item.roomDescription,
                       );
                     },
                   );

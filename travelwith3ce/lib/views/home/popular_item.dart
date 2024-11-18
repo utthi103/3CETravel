@@ -18,7 +18,6 @@ class PopularItem extends StatelessWidget {
   final String rating;
   final List<String> amenities;
   final String? like;
-  final String description;
 
   const PopularItem(
       {Key? key,
@@ -28,7 +27,6 @@ class PopularItem extends StatelessWidget {
       required this.price,
       required this.rating,
       required this.amenities,
-      required this.description,
       this.like})
       : super(key: key);
 
@@ -64,8 +62,6 @@ class PopularItem extends StatelessWidget {
                   price: price,
                   rawRating: rating,
                   amenities: amenities,
-                  description: description,
-                
                 ),
               ),
             );

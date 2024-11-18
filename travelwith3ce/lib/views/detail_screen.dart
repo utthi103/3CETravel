@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+// import 'package:travelwith3ce/views/detail/image_container.dart';
 import 'package:travelwith3ce/views/detail/detail_info.dart';
 import 'package:travelwith3ce/views/detail/description.dart';
 import 'package:travelwith3ce/views/detail/facilities.dart';
 import 'package:travelwith3ce/views/detail/custom_button.dart';
-import 'package:travelwith3ce/models/roomModel.dart';
 
 class DetailScreen extends StatefulWidget {
   final String imageUrl;
@@ -13,7 +13,6 @@ class DetailScreen extends StatefulWidget {
   final String rawRating;
   final String price;
   final List<String> amenities;
-  final String description; // Thêm trường mô tả
 
   const DetailScreen({
     Key? key,
@@ -22,7 +21,6 @@ class DetailScreen extends StatefulWidget {
     required this.rawRating,
     required this.price,
     required this.amenities,
-    required this.description, // Thêm mô tả
   }) : super(key: key);
 
   @override
@@ -50,9 +48,7 @@ class _DetailScreenState extends State<DetailScreen> {
             Facilities(
               amenities: widget.amenities,
             ),
-            Description(
-              description: widget.description, // Truyền mô tả vào widget Description
-            ),
+            const Description(),
             const CustomButton(),
           ],
         ),

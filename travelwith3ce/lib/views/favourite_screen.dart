@@ -47,7 +47,6 @@ class FavouriteScreen extends StatelessWidget {
                 rating: '4.5',
                 amenities: [],
                 like: '1', // If the room is liked, set like to '1'
-                description: room.description,
               );
             },
           );

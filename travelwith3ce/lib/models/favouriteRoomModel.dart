@@ -4,7 +4,6 @@ class favouriteRoomModel {
   double roomPrice;
   String roomImage;
   String userId; // Danh sách URL ảnh
-  String description;
 
   // Constructor
   favouriteRoomModel(
@@ -12,8 +11,7 @@ class favouriteRoomModel {
       required this.roomName,
       required this.roomPrice,
       required this.roomImage,
-      required this.userId,
-      required this.description});
+      required this.userId});
 
   // Phương thức chuyển từ JSON sang RoomModel
   factory favouriteRoomModel.fromJson(Map<String, dynamic> json) {
@@ -24,8 +22,7 @@ class favouriteRoomModel {
             ? double.tryParse(json['roomPrice']) ?? 0.0
             : 0.0,
         roomImage: json['roomImage'] ?? '',
-        userId: json['userId'] ?? '',
-        description: json['roomDecrition']);
+        userId: json['userId'] ?? '');
   }
 
   // Phương thức chuyển từ RoomModel sang JSON
