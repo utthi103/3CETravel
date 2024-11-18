@@ -137,18 +137,18 @@ class _DetailScreenState extends State<DetailScreen> {
               ),
 
               // Hiển thị giá đã tính toán trong hộp thoại
-              // Padding(
-              //   padding: const EdgeInsets.symmetric(vertical: 10.0),
-              //   child: Text(
-              //     _checkInDate != null && _checkOutDate != null
-              //         ? "Total Price: \$${_calculatedPrice > 0 ? _calculatedPrice.toStringAsFixed(2) : '0.00'}"
-              //         : "Select dates to calculate price",
-              //     style: const TextStyle(
-              //         fontWeight: FontWeight.bold,
-              //         fontSize: 16.0,
-              //         color: Colors.black),
-              //   ),
-              // ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                child: Text(
+                  _checkInDate != null && _checkOutDate != null
+                      ? "Total Price: \$${_calculatedPrice > 0 ? _calculatedPrice.toStringAsFixed(2) : '0.00'}"
+                      : "Select dates to calculate price",
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16.0,
+                      color: Colors.black),
+                ),
+              ),
             ],
           ),
           actions: [
