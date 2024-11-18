@@ -5,7 +5,12 @@ import 'package:travelwith3ce/views/detail/section_title.dart';
 import '../../constant.dart';
 
 class Description extends StatelessWidget {
-  const Description({Key? key}) : super(key: key);
+  final String description;  // Nhận mô tả qua constructor
+
+  const Description({
+    Key? key,
+    required this.description,  // Chắc chắn rằng mô tả được truyền vào
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +25,7 @@ class Description extends StatelessWidget {
           child: FadeInUp(
             duration: const Duration(milliseconds: 1300),
             child: Text(
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eu\ntincidunt nunc cras integer magna sapien, id egestas. Amet\nfacilisis ac in nunc sed convallis aenean mattis sit. Lacus\ndolor, integer vel suspendisse cum pellentesque ornare\nquis. Mattis ut viverra purus leo elit, et.',
+              description,  // Hiển thị mô tả từ dữ liệu
               style: nunito14.copyWith(color: Colors.black),
             ),
           ),

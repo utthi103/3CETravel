@@ -13,6 +13,7 @@ class DetailScreen extends StatefulWidget {
   final String rawRating;
   final String price;
   final List<String> amenities;
+  final String description;  // Thêm description vào constructor
 
   const DetailScreen({
     Key? key,
@@ -21,8 +22,9 @@ class DetailScreen extends StatefulWidget {
     required this.rawRating,
     required this.price,
     required this.amenities,
+    required this.description,  // Thêm description vào constructor
   }) : super(key: key);
-
+  
   @override
   _DetailScreenState createState() => _DetailScreenState();
 }
@@ -48,7 +50,9 @@ class _DetailScreenState extends State<DetailScreen> {
             Facilities(
               amenities: widget.amenities,
             ),
-            const Description(),
+            Description(
+            description: widget.description,
+            ),
             const CustomButton(),
           ],
         ),

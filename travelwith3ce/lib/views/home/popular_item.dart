@@ -1,14 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:travelwith3ce/constant.dart';
 import 'package:travelwith3ce/controllers/roomController.dart';
 import 'package:travelwith3ce/models/bottom_bar.dart';
 import 'package:travelwith3ce/views/detail_screen.dart';
-import 'package:shared_preferences/shared_preferences.dart'; // Để kiểm tra trạng thái đăng nhập
-import 'package:travelwith3ce/views/home_screen.dart';
-
-import '../../constant.dart';
 
 class PopularItem extends StatelessWidget {
   final String roomId;
@@ -17,27 +14,24 @@ class PopularItem extends StatelessWidget {
   final String price;
   final String rating;
   final List<String> amenities;
+  final String description;
   final String? like;
 
-  const PopularItem(
-      {Key? key,
-      required this.roomId,
-      required this.imageUrl,
-      required this.name,
-      required this.price,
-      required this.rating,
-      required this.amenities,
-      this.like})
-      : super(key: key);
+  const PopularItem({
+    Key? key,
+    required this.roomId,
+    required this.imageUrl,
+    required this.name,
+    required this.price,
+    required this.rating,
+    required this.amenities,
+    required this.description,
+    this.like,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    void likeAction(
-      String roomId,
-      String roomImage,
-      String roomName,
-      String roomPrice,
-    ) {
+    void likeAction(String roomId, String roomImage, String roomName, String roomPrice) {
       RoomController roomController = RoomController();
       roomController.like(roomId, roomImage, roomName, roomPrice);
     }
@@ -62,6 +56,7 @@ class PopularItem extends StatelessWidget {
                   price: price,
                   rawRating: rating,
                   amenities: amenities,
+                  description: description,
                 ),
               ),
             );
@@ -74,13 +69,13 @@ class PopularItem extends StatelessWidget {
                   height: MediaQuery.of(context).size.height * 0.3,
                   width: MediaQuery.of(context).size.width * 0.5,
                   child: ClipRRect(
-                      borderRadius: const BorderRadius.all(Radius.circular(15)),
-                      child: Image.memory(
-                        base64Decode(
-                            imageUrl), // Giải mã base64 thành mảng byte
-                        scale: 4,
-                        fit: BoxFit.cover,
-                      )),
+                    borderRadius: const BorderRadius.all(Radius.circular(15)),
+                    child: Image.memory(
+                      base64Decode(imageUrl), // Decode the base64 image
+                      scale: 4,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
               ),
               Positioned(
@@ -89,51 +84,35 @@ class PopularItem extends StatelessWidget {
                 child: ClipOval(
                   child: GestureDetector(
                     onTap: () async {
-                      // Kiểm tra trạng thái đăng nhập
+                      // Check login status
                       final prefs = await SharedPreferences.getInstance();
                       String? userId = prefs.getString('userId');
 
                       if (userId == null) {
                         _showLoginPrompt(context);
                       } else {
-                        // Thực hiện hành động cho người dùng đã đăng nhập
-                        // Ví dụ: thêm vào danh sách yêu thích
+                        // If logged in, handle the like/unlike action
+                        like == "1" ? unLikeAction(roomId) : likeAction(roomId, imageUrl, name, price);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => BottomBar(),
+                          ),
+                        );
                       }
                     },
                     child: Container(
-                        height: 23,
-                        width: 23,
-                        color: kTextColor,
-                        child: GestureDetector(
-                          onTap: like == "1"
-                              ? () {
-                                  unLikeAction(roomId);
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => BottomBar(),
-                                    ),
-                                  );
-                                } // Không thực hiện hành động khi like == "1"
-                              : () {
-                                  likeAction(roomId, imageUrl, name, price);
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => BottomBar(),
-                                    ),
-                                  );
-                                },
-                          child: Padding(
-                            padding: const EdgeInsets.all(5),
-                            child: Icon(
-                              Icons.favorite,
-                              color: like == "1"
-                                  ? Colors.red
-                                  : null, // Set color to red if like == "1"
-                            ),
-                          ),
-                        )),
+                      height: 23,
+                      width: 23,
+                      color: kTextColor,
+                      child: Padding(
+                        padding: const EdgeInsets.all(5),
+                        child: Icon(
+                          Icons.favorite,
+                          color: like == "1" ? Colors.red : null, // Set color to red if liked
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -144,48 +123,37 @@ class PopularItem extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    Text(
+                      name,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Text(
+                      '${price} VND',
+                      style: nunito14.copyWith(
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Text(
-                          name,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                        Icon(
+                          Icons.star,
+                          size: 20,
+                          color: const Color.fromARGB(255, 241, 221, 41),
                         ),
+                        const SizedBox(width: 4),
                         Text(
-                          '${price} VND',
-                          style: nunito14.copyWith(
-                            fontWeight: FontWeight.w900,
-                          ),
+                          rating,
+                          style: nunito8.copyWith(fontWeight: FontWeight.bold, fontSize: 12),
                         ),
                       ],
                     ),
-                    Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Icon(
-                              Icons.star,
-                              size: 20,
-                              color: const Color.fromARGB(255, 241, 221, 41),
-                            ),
-                            const SizedBox(width: 4),
-                            Text(
-                              rating,
-                              style: nunito8.copyWith(
-                                  fontWeight: FontWeight.bold, fontSize: 12),
-                            ),
-                          ],
-                        ),
-                      ],
-                    )
                   ],
                 ),
               ),
@@ -206,15 +174,14 @@ class PopularItem extends StatelessWidget {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Đóng hộp thoại
+                Navigator.of(context).pop(); // Close dialog
               },
               child: const Text("Cancel"),
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Đóng hộp thoại
-                Navigator.pushNamed(
-                    context, '/login'); // Điều hướng đến màn hình đăng nhập
+                Navigator.of(context).pop(); // Close dialog
+                Navigator.pushNamed(context, '/login'); // Navigate to login screen
               },
               child: const Text("OK"),
             ),

@@ -51,30 +51,7 @@ class ExploreList extends StatelessWidget {
                               )),
                         ),
                       ),
-                      // Kiểm tra và hiển thị ảnh: nếu ảnh là Base64 hoặc URL hợp lệi
-                      // imageUrl.isNotEmpty
-                      //     ? isValidUrl
-                      //         ? Image.network(
-                      //             imageUrl, // Tải ảnh từ URL
-                      //             height: 80,
-                      //             width: 80,
-                      //             fit: BoxFit.cover,
-                      //           )
-                      //         : (imageUrl.startsWith('data:image')
-                      //             ? Image.memory(
-                      //                 base64Decode(imageUrl
-                      //                     .split(',')[1]), // Giải mã Base64
-                      //                 height: 80,
-                      //                 width: 80,
-                      //                 fit: BoxFit.cover,
-                      //               )
-                      //             : const Icon(Icons.image,
-                      //                 size: 80,
-                      //                 color: Colors
-                      //                     .grey)) // Placeholder for invalid image
-                      //     : const Icon(Icons.image,
-                      //         size: 80,
-                      //         color: Colors.grey), // Fallback if no image
+                     
                       const SizedBox(height: 5), // Khoảng cách giữa ảnh và tên
                       // Hiển thị tên phòng
                       Text(
