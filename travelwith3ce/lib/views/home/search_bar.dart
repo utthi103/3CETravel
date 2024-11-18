@@ -1,10 +1,21 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:travelwith3ce/controllers/roomController.dart';
+import 'package:travelwith3ce/models/roomModel.dart';
+import 'package:travelwith3ce/views/home/searchPage.dart';
 import '../../constant.dart';
 
-class SearchBarr extends StatelessWidget {
+class SearchBarr extends StatefulWidget {
   const SearchBarr({Key? key}) : super(key: key);
+
+  @override
+  _SearchBarrState createState() => _SearchBarrState();
+}
+
+class _SearchBarrState extends State<SearchBarr> {
+  // Tạo TextEditingController để lấy giá trị từ TextField
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +28,6 @@ class SearchBarr extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  // Use Expanded to take up available space
                   child: Container(
                     height: 44,
                     padding: const EdgeInsets.symmetric(
@@ -28,6 +38,8 @@ class SearchBarr extends StatelessWidget {
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: TextField(
+                      controller:
+                          _searchController, // Đưa controller vào TextField
                       style: TextStyle(color: kAccentColor),
                       decoration: InputDecoration(
                         hintText: 'Search Hotel',
@@ -36,6 +48,10 @@ class SearchBarr extends StatelessWidget {
                         hintStyle:
                             nunitoRegular12.copyWith(color: kAccentColor),
                       ),
+                      onSubmitted: (query) {
+                        // Gọi hàm tìm kiếm khi người dùng nhấn Enter
+                        _search(query);
+                      },
                     ),
                   ),
                 ),
@@ -57,5 +73,30 @@ class SearchBarr extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  // Hàm thực hiện tìm kiếm
+  void _search(String query) async {
+    // Hàm này sẽ được gọi khi nhấn Enter, truyền giá trị nhập vào
+    print('Searching for: $query');
+
+    // Khởi tạo RoomController và gọi phương thức fetchRoomByName
+    RoomController roomController = RoomController();
+
+    try {
+      // Chờ fetchRoomByName để trả về kết quả trước khi gán vào listRoom
+      List<RoomModel> SearchRooms = await roomController.fetchRoomByName(query);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => SearchPage(
+            rooms: SearchRooms,
+          ),
+        ),
+      );
+    } catch (e) {
+      // Xử lý lỗi nếu fetchRoomByName gặp sự cố
+      print('Error fetching rooms: $e');
+    }
   }
 }

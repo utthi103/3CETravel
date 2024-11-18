@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:image_picker_web/image_picker_web.dart';
+// import 'package:image_picker_web/image_picker_web.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travelwith3ce/controllers/roomController.dart'; // Import the RoomController class
 
@@ -28,7 +28,9 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
 
   // Function to pick image and convert to base64
   Future<void> _pickImage() async {
-    final result = await ImagePickerWeb.getImage(outputType: ImageType.bytes);
+    //  final result = await ImagePickerWeb.getImage(outputType: ImageType.bytes);
+    final result = 'cam';
+
     if (result != null) {
       // Convert the selected image to base64
       String base64Image = base64Encode(result as Uint8List);

@@ -15,6 +15,7 @@ List<Object> popular = [
   }
 ];
 
+
 List<String> nearby = [
   "assets/images/nearby1.png",
   "assets/images/nearby2.png",

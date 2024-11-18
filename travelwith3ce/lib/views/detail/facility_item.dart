@@ -20,8 +20,8 @@ class FacilityItem extends StatelessWidget {
       children: [
         // SVG Icon
         Container(
-          height: 45,
-          width: 45,
+          height: 35,
+          width: 35,
           decoration: BoxDecoration(
             color: kShadeColor,
             borderRadius: BorderRadius.circular(13),

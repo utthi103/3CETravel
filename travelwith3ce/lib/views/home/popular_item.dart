@@ -2,29 +2,53 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:travelwith3ce/controllers/roomController.dart';
+import 'package:travelwith3ce/models/bottom_bar.dart';
 import 'package:travelwith3ce/views/detail_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // Để kiểm tra trạng thái đăng nhập
+import 'package:travelwith3ce/views/home_screen.dart';
 
 import '../../constant.dart';
 
 class PopularItem extends StatelessWidget {
+  final String roomId;
   final String imageUrl;
   final String name;
   final String price;
   final String rating;
   final List<String> amenities;
+  final String? like;
+  final String description;
 
   const PopularItem(
       {Key? key,
+      required this.roomId,
       required this.imageUrl,
       required this.name,
       required this.price,
       required this.rating,
-      required this.amenities})
+      required this.amenities,
+      required this.description,
+      this.like})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    void likeAction(
+      String roomId,
+      String roomImage,
+      String roomName,
+      String roomPrice,
+    ) {
+      RoomController roomController = RoomController();
+      roomController.like(roomId, roomImage, roomName, roomPrice);
+    }
+
+    void unLikeAction(String roomId) {
+      RoomController roomController = RoomController();
+      roomController.unLike(roomId);
+    }
+
     return Padding(
       padding: const EdgeInsets.only(right: 16),
       child: SizedBox(
@@ -40,6 +64,8 @@ class PopularItem extends StatelessWidget {
                   price: price,
                   rawRating: rating,
                   amenities: amenities,
+                  description: description,
+                
                 ),
               ),
             );
@@ -79,16 +105,39 @@ class PopularItem extends StatelessWidget {
                       }
                     },
                     child: Container(
-                      height: 23,
-                      width: 23,
-                      color: kTextColor,
-                      child: Padding(
-                        padding: const EdgeInsets.all(5),
-                        child: SvgPicture.asset(
-                          'assets/icons/heart.svg',
-                        ),
-                      ),
-                    ),
+                        height: 23,
+                        width: 23,
+                        color: kTextColor,
+                        child: GestureDetector(
+                          onTap: like == "1"
+                              ? () {
+                                  unLikeAction(roomId);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => BottomBar(),
+                                    ),
+                                  );
+                                } // Không thực hiện hành động khi like == "1"
+                              : () {
+                                  likeAction(roomId, imageUrl, name, price);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => BottomBar(),
+                                    ),
+                                  );
+                                },
+                          child: Padding(
+                            padding: const EdgeInsets.all(5),
+                            child: Icon(
+                              Icons.favorite,
+                              color: like == "1"
+                                  ? Colors.red
+                                  : null, // Set color to red if like == "1"
+                            ),
+                          ),
+                        )),
                   ),
                 ),
               ),
@@ -114,7 +163,7 @@ class PopularItem extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                         Text(
-                          '${price} VNĐ',
+                          '${price} VND',
                           style: nunito14.copyWith(
                             fontWeight: FontWeight.w900,
                           ),
