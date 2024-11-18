@@ -39,7 +39,7 @@ class SearchPage extends StatelessWidget {
                       price: room.roomPrice.toString(),
                       rating: '4.5', // Static rating, adjust as needed
                       amenities: room.roomAmenities,
-                      description: room.roomDescription,
+                      decription: room.roomDescription,
                     );
                   },
                 ),

@@ -1,7 +1,8 @@
-import 'dart:convert'; // Import thư viện để giải mã Base64
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:travelwith3ce/models/roomModel.dart';
+import 'package:travelwith3ce/views/detail_screen.dart';
 import 'package:travelwith3ce/views/home/section_title.dart';
 
 class ExploreList extends StatelessWidget {
@@ -33,37 +34,53 @@ class ExploreList extends StatelessWidget {
                   var room = rooms[index];
                   String imageUrl = room.roomImages[0];
 
-                  return Column(
-                    children: [
-                      Hero(
-                        tag: room,
-                        child: SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.1,
-                          width: MediaQuery.of(context).size.width * 0.2,
-                          child: ClipRRect(
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DetailScreen(
+                            imageUrl: imageUrl,
+                            title: room.roomName,
+                            rawRating: "4.5", // Giá trị mẫu
+                            price: room.roomPrice.toString(),
+                            amenities: room.roomAmenities,
+                            description: room
+                                .roomDescription, // Đảm bảo RoomModel có trường này
+                          ),
+                        ),
+                      );
+                    },
+                    child: Column(
+                      children: [
+                        Hero(
+                          tag: room,
+                          child: SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.1,
+                            width: MediaQuery.of(context).size.width * 0.2,
+                            child: ClipRRect(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(15)),
                               child: Image.memory(
-                                base64Decode(
-                                    imageUrl), // Giải mã base64 thành mảng byte
+                                base64Decode(imageUrl),
                                 scale: 4,
                                 fit: BoxFit.cover,
-                              )),
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                     
-                      const SizedBox(height: 5), // Khoảng cách giữa ảnh và tên
-                      // Hiển thị tên phòng
-                      Text(
-                        room.roomName,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
+                        const SizedBox(height: 5),
+                        Text(
+                          room.roomName,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
                         ),
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
+                      ],
+                    ),
                   );
                 },
               ),

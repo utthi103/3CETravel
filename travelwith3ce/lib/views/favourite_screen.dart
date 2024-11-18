@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:travelwith3ce/controllers/roomController.dart';
 import 'package:travelwith3ce/models/favouriteRoomModel.dart';
+import 'package:travelwith3ce/models/roomModel.dart';
 import 'package:travelwith3ce/views/home/popular_item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,7 +17,8 @@ class FavouriteScreen extends StatelessWidget {
           return Center(
               child: CircularProgressIndicator()); // Show loading indicator
         } else if (snapshot.hasError) {
-          return _buildErrorState(context, snapshot.error); // Handle errors
+          return Center(
+              child: Text('Error: ${snapshot.error}')); // Handle errors
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return Center(child: Text('No Favourite Rooms')); // No data found
         } else {
@@ -43,9 +45,8 @@ class FavouriteScreen extends StatelessWidget {
                 name: room.roomName,
                 price: room.roomPrice.toString(),
                 rating: '4.5',
-                amenities: [], // You can pass a list of amenities here if available
-                description: room
-                    .roomName, // You can use roomName or another field as description
+                amenities: [],
+                decription: room.description,
                 like: '1', // If the room is liked, set like to '1'
               );
             },
@@ -61,40 +62,11 @@ class FavouriteScreen extends StatelessWidget {
     String? userId = prefs.getString('userId');
 
     if (userId == null) {
-      _showLoginPrompt(); // Show login prompt
       throw Exception('User not logged in');
     }
 
     RoomController roomController = RoomController();
     print("Fetching favourite rooms for user: $userId");
     return roomController.fetchFavouriteRoomByUserId(userId);
-  }
-
-  // Build an error state to display more detailed messages
-  Widget _buildErrorState(BuildContext context, Object? error) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.error, color: Colors.red, size: 48),
-          SizedBox(height: 10),
-          Text('Error: $error', style: TextStyle(fontSize: 18)),
-          SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () {
-              // Optionally retry the fetching
-              // Reload the screen or handle retry logic
-            },
-            child: Text('Retry'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Function to show login prompt if the user is not logged in
-  void _showLoginPrompt() {
-    // You can display an alert or navigate to login screen
-    print('User not logged in. Prompting login.');
   }
 }

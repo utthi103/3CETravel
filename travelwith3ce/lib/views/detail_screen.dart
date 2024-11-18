@@ -24,10 +24,11 @@ class DetailScreen extends StatefulWidget {
     required this.amenities,
     required this.description,  // Thêm description vào constructor
   }) : super(key: key);
-  
+
   @override
   _DetailScreenState createState() => _DetailScreenState();
 }
+
 
 class _DetailScreenState extends State<DetailScreen> {
   @override
@@ -51,7 +52,7 @@ class _DetailScreenState extends State<DetailScreen> {
               amenities: widget.amenities,
             ),
             Description(
-            description: widget.description,
+              description: widget.description,  // Truyền description vào widget Description
             ),
             const CustomButton(),
           ],
@@ -60,3 +61,4 @@ class _DetailScreenState extends State<DetailScreen> {
     );
   }
 }
+

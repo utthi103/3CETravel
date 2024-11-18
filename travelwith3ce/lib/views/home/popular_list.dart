@@ -75,8 +75,7 @@ class PopularList extends StatelessWidget {
                         price: item.roomPrice.toString(),
                         rating: '4.5',
                         amenities: item.roomAmenities,
-                        description: item
-                            .roomDescription, // Access roomDescription from the individual item
+                        decription: item.roomDescription,
                         like: check ? '1' : '0',
                       );
                     },
