@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "551230337362",
+    "firebase_url": "https://cetravel-3bd3c-default-rtdb.firebaseio.com",
+    "project_id": "cetravel-3bd3c",
+    "storage_bucket": "cetravel-3bd3c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:551230337362:android:76327d8a7987155284ca8b",
+        "android_client_info": {
+          "package_name": "com.example.travelwith3ce"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9t09dopE5237YfB7N1dIvPD66EL1FeHg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
