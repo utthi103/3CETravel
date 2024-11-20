@@ -1,6 +1,6 @@
 # TRAVELWITH3CE: ỨNG DỤNG ĐẶT PHÒNG DU LỊCH
 
-Travelwith3CE là một ứng dụng đặt phòng du lịch full-stack, được phát triển với **Flutter** cho phần frontend, **Dart** và **Firebase** cho phần backend. Ứng dụng hỗ trợ người dùng tìm kiếm, đặt phòng khách sạn, quản lý thông tin cá nhân và cung cấp bảng điều khiển cho quản trị viên để quản lý khách sạn, đặt phòng, cũng như phản hồi của người dùng.
+Travelwith3CE là một ứng dụng đặt phòng du lịch full-stack, được phát triển với **Flutter** cho phần frontend, **Dart** và **Firebase** cho phần backend. Ứng dụng hỗ trợ người dùng tìm kiếm, đặt phòng khách sạn, quản lý thông tin cá nhân và cung cấp bảng điều khiển cho quản trị viên để quản lý khách sạn, đặt phòng
 
 ## Các chức năng chính
 
