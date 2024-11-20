@@ -139,4 +139,4 @@ Travelwith3CE là một ứng dụng đặt phòng du lịch full-stack, đượ
 
 ## Link Báo cáo:
 
-[Báo cáo](hhttps://docs.google.com/document/d/1p-HiMUY4iYkFkv108GWMi0VVzWmsbqcm/edit?usp=sharing&ouid=108853351507976726842&rtpof=true&sd=true)
+[Báo cáo](https://docs.google.com/document/d/1p-HiMUY4iYkFkv108GWMi0VVzWmsbqcm/edit?usp=sharing&ouid=108853351507976726842&rtpof=true&sd=true)
